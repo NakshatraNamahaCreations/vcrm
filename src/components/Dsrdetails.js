@@ -684,7 +684,11 @@ function Dsrdetails() {
     e.preventDefault();
     try {
       const config = {
-        url: `/changeappotime/${data._id}/${dsrdata[0]?._id}`,
+        url:
+          dsrdata.length > 0
+            ? `/changeappotime/${data._id}/${dsrdata[0]?._id}`
+            : `/changeappotimewithoutdsr/${data._id}`,
+
         method: "post",
         baseURL: apiURL,
         headers: { "content-type": "application/json" },
@@ -806,7 +810,7 @@ function Dsrdetails() {
                     <select
                       className="col-md-12 vhs-input-value"
                       onChange={(e) => setnewcity(e.target.value)}
-                      defaultValue={data.city}
+                      defaultValue={data?.city}
                     >
                       <option>{data.city}</option>
                       {citydata?.map((data, index) => (

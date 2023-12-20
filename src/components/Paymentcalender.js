@@ -48,22 +48,12 @@ function Paymentcalender() {
   const currentDate = new Date();
 
   // Get the start of the current month
-  const startOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
-  );
-  // Set time to 00:00:00 for the start of the day
-  startOfMonth.setHours(0, 0, 0, 0);
+  const startOfMonth = moment(currentDate)
+    .startOf("month")
+    .format("YYYY-MM-DD");
 
   // Get the end of the current month
-  const endOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + 1,
-    0
-  );
-
-  endOfMonth.setHours(23, 59, 59, 999);
+  const endOfMonth = moment(currentDate).endOf("month").format("YYYY-MM-DD");
 
   const [rstart, setrstart] = useState(startOfMonth);
   const [rend, setrend] = useState(endOfMonth);
@@ -85,16 +75,20 @@ function Paymentcalender() {
 
     setTotalCount(count);
     setFilteredData(newFilteredData);
+    const convertedsDate = moment(range.start).format("YYYY-MM-DD");
+    const convertedeDate = moment(range.end).format("YYYY-MM-DD");
 
-    setrstart(range.start);
-    setrend(range.end);
+    setrstart(convertedsDate);
+    setrend(convertedeDate);
   };
+
+  console.log(rstart, rend);
 
   useEffect(() => {
     getAlldsr();
-  }, []);
+  }, [rstart, rend]);
 
-  const getAlldsr = async (month) => {
+  const getAlldsr = async () => {
     try {
       let res = await axios.post(apiURL + "/getPaymentcalenderlist", {
         startDate: rstart, // Send start date to the backend

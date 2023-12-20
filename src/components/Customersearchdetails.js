@@ -49,10 +49,13 @@ function Customersearchdetails() {
   const [landmark, setLankmark] = useState("");
   const [selectedSlot, setSelectedSlot] = useState("");
   const [serviceSlots, setServiceSlots] = useState([]);
-const [newAdd, setnewAdd] = useState(false)
+  const [newAdd, setnewAdd] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => {setShow(true);setnewAdd(true)} ;
+  const handleShow = () => {
+    setShow(true);
+    setnewAdd(true);
+  };
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
@@ -60,19 +63,19 @@ const [newAdd, setnewAdd] = useState(false)
   const [selectedAddress, setSelectedAddress] = useState("");
   const [category, setcategory] = useState(editenable.category);
 
-const [Caddres, setCaddres] = useState()
+  const [Caddres, setCaddres] = useState();
   const handleCategoryChange = (e) => {
     setcategory(e.target.value);
   };
 
   const handleAddressSelect = (address) => {
     setSelectedAddress(address);
-    setCaddres("")
+    setCaddres("");
   };
 
   const handleRowClick = (address) => {
     setSelectedAddress(address);
-    setCaddres("")
+    setCaddres("");
   };
 
   const handleRowClick1 = (item) => {
@@ -91,10 +94,8 @@ const [Caddres, setCaddres] = useState()
     );
   };
 
-
   const handleAddressSelect1 = (item) => {
- 
-setCaddres(item)
+    setCaddres(item);
     setSelectedAddress({
       address: item.lnf,
       landmark: item.cnap,
@@ -108,10 +109,7 @@ setCaddres(item)
       try {
         let res = await axios.get(apiURL + `/getCustomerById/${id}`);
         if (res.status === 200) {
-    
           setcustomerdata([res.data?.customer]);
-
-
         }
       } catch (error) {
         console.log("error", error);
@@ -266,9 +264,14 @@ setCaddres(item)
   const dividedDates = [];
 
   for (let i = 0; i < serviceFrequency; i++) {
-    const date = sDate.clone().add(interval * i, "days");
+    const date = sDate
+      .clone()
+      .add(interval * i, "days")
+      .format("YYYY-MM-DD");
+
     dividedDates.push(date);
   }
+
   const communityPercentage = (serviceCharge * oneCommunity.percentage) / 100; //this line
   const remainingAmt = oneCommunity.percentage
     ? serviceCharge - communityPercentage
@@ -288,7 +291,10 @@ setCaddres(item)
   const dividedamtCharges = [];
 
   for (let i = 0; i < af; i++) {
-    const date = sDate.clone().add(intervalamt * i, "days");
+    const date = sDate
+      .clone()
+      .add(intervalamt * i, "days")
+      .format("YYYY-MM-DD");
     dividedamtDates.push(date);
 
     const charge =
@@ -317,7 +323,7 @@ setCaddres(item)
     }
   };
 
-  const selecttheaddress = async(event) => {
+  const selecttheaddress = async (event) => {
     event.preventDefault();
     if (selectedAddress) {
       addtreatmentdetails();
@@ -340,8 +346,8 @@ setCaddres(item)
 
   const addtreatmentdetails = async (e) => {
     e.preventDefault();
-
-    if (!contractType || !treatment ) {
+    console.log("dividedDates", dividedDates);
+    if (!contractType || !treatment) {
       alert("Fill all feilds");
     } else {
       try {
@@ -352,14 +358,15 @@ setCaddres(item)
           // data: formdata,
           headers: { "content-type": "application/json" },
           data: {
-            customerData:{
-              _id:customerdata[0]?._id,
-              EnquiryId:customerdata[0]?.EnquiryId,
-              customerName:customerdata[0]?.customerName,
-              category:customerdata[0]?.category,
-              mainContact:customerdata[0]?.mainContact,
-              email:customerdata[0]?.email,
-            } ,
+            customerData: {
+              _id: customerdata[0]?._id,
+              EnquiryId: customerdata[0]?.EnquiryId,
+              customerName: customerdata[0]?.customerName,
+              category: customerdata[0]?.category,
+              mainContact: customerdata[0]?.mainContact,
+              email: customerdata[0]?.email,
+              approach: customerdata[0]?.approach,
+            },
             dividedDates: dividedDates,
             dividedamtDates: dividedamtDates,
             dividedamtCharges: dividedamtCharges,
@@ -372,24 +379,25 @@ setCaddres(item)
             serviceID: serviceId,
             slots: selectedSlot,
             selectedSlotText: selectedSlot,
-            EnquiryId:customerdata[0]?.EnquiryId,
+            EnquiryId: customerdata[0]?.EnquiryId,
             serviceCharge: serviceCharge,
             dateofService: dateofService,
-            deliveryAddress:!newAdd? selectedAddress :{
-              
-                userId: customerdata[0]?._id,
-                address: Address,
-                saveAs: streetName,
-                landmark: landmark,
+            deliveryAddress: !newAdd
+              ? selectedAddress
+              : {
+                  userId: customerdata[0]?._id,
+                  address: Address,
+                  saveAs: streetName,
+                  landmark: landmark,
 
-                platNo: houseNumber,
-             
-            },
+                  platNo: houseNumber,
+                },
             desc: desc,
             city: customerdata[0].city,
             serviceFrequency: serviceFrequency,
             startDate: dateofService,
             expiryDate: expiryDate,
+            type: customerdata[0]?.approach,
             firstserviceDate: firstserviceDate,
             date: moment().format("YYYY-MM-DD"),
             time: moment().format("LT"),
@@ -399,25 +407,25 @@ setCaddres(item)
           },
         };
 
-        if (whatsappdata.length > 0) {
-          // Assuming you want the first item from whatsappdata for the API call
-          const selectedResponse = whatsappdata[0];
-          // makeApiCall(selectedResponse, customerdata[0]?.mainContact);
+        // if (whatsappdata.length > 0) {
+        // Assuming you want the first item from whatsappdata for the API call
+        // const selectedResponse = whatsappdata[0];
+        // makeApiCall(selectedResponse, customerdata[0]?.mainContact);
 
-          await axios(config).then(function (response) {
-            if (response.status === 200) {
-              alert("Added");
-              window.location.reload("");
-            }
-          });
-        } else {
-          // Handle the case where whatsappdata is empty
-          console.error("whatsappdata is empty. Cannot proceed.");
-          alert("Not Added");
-        }
+        await axios(config).then(function (response) {
+          if (response.status === 200) {
+            alert("Added");
+            window.location.reload("");
+          }
+        });
+        // } else {
+        //   // Handle the case where whatsappdata is empty
+        //   console.error("whatsappdata is empty. Cannot proceed.");
+        //   alert("Not Added");
+        // }
       } catch (error) {
-        console.error(error);
-        alert(" Not Added");
+        console.error(error.message);
+        alert(" Not Added", error.message);
       }
     }
   };
@@ -457,7 +465,7 @@ setCaddres(item)
           slots: selectedSlot,
           selectedSlotText: selectedSlot,
           serviceCharge: serviceCharge,
-          deliveryAddress:editenable?.deliveryAddress,
+          deliveryAddress: editenable?.deliveryAddress,
           desc: desc,
 
           communityId: oneCommunity._id, //this line
@@ -499,8 +507,7 @@ setCaddres(item)
         await axios(config).then(function (response) {
           if (response.status === 200) {
             addtreatmentdetails(e); // Pass necessary arguments or event data if required
-            
-          
+
             // Consider using a delay before reloading the window to ensure the user sees the alert
             setTimeout(() => {
               window.location.reload();
@@ -1593,67 +1600,65 @@ setCaddres(item)
         </Modal.Header>
         <Modal.Body>
           <div className="row px-3">
-            {customerdata[0]?.lnf ?
-            customerdata.map((item, index) => (
-              <div key={index}>
-                <div
-                  className="col-md-12 d-flex"
-                  onClick={() => handleRowClick1(item)}
-                >
-                  <div className="mt-2">
-                    <input
-                      type="radio"
-                      checked={ Caddres === item}
-                      onChange={() => handleAddressSelect1(item)}
-                      style={{ width: 40, fontSize: "20px", height: "20px" }}
-                    />
-                  </div>
-                  <div className="d-flex">
-                    {`${item.rbhf}, ${item.cnap}, ${item.lnf}`}
-                  </div>
-                </div>
-              </div>
-            )):
-            <></>
-            }
-          
-         
-            {  customerAddressdata.map((address, index) => (
+            {customerdata[0]?.lnf ? (
+              customerdata.map((item, index) => (
                 <div key={index}>
                   <div
                     className="col-md-12 d-flex"
-                    onClick={() => handleRowClick(address)}
+                    onClick={() => handleRowClick1(item)}
                   >
                     <div className="mt-2">
                       <input
                         type="radio"
-                        checked={selectedAddress === address}
-                        onChange={() => handleAddressSelect(address)}
+                        checked={Caddres === item}
+                        onChange={() => handleAddressSelect1(item)}
                         style={{ width: 40, fontSize: "20px", height: "20px" }}
                       />
                     </div>
                     <div className="d-flex">
-                      {`${address.platNo}, ${address.landmark}, ${address.address}`}
+                      {`${item.rbhf}, ${item.cnap}, ${item.lnf}`}
                     </div>
-                    <a
-                      onClick={() => deletecustomeraddress(address._id)}
-                      className="hyperlink mx-1"
-                    >
-                      <i
-                        class="fa-solid fa-trash"
-                        title="Delete"
-                        style={{ color: "#dc3545" }}
-                      ></i>
-                    </a>
                   </div>
                 </div>
-              ))}
-         
-              <div>
-                
-                <Button onClick={handleShow}>Add Address</Button>
+              ))
+            ) : (
+              <></>
+            )}
+
+            {customerAddressdata.map((address, index) => (
+              <div key={index}>
+                <div
+                  className="col-md-12 d-flex"
+                  onClick={() => handleRowClick(address)}
+                >
+                  <div className="mt-2">
+                    <input
+                      type="radio"
+                      checked={selectedAddress === address}
+                      onChange={() => handleAddressSelect(address)}
+                      style={{ width: 40, fontSize: "20px", height: "20px" }}
+                    />
+                  </div>
+                  <div className="d-flex">
+                    {`${address.platNo}, ${address.landmark}, ${address.address}`}
+                  </div>
+                  <a
+                    onClick={() => deletecustomeraddress(address._id)}
+                    className="hyperlink mx-1"
+                  >
+                    <i
+                      class="fa-solid fa-trash"
+                      title="Delete"
+                      style={{ color: "#dc3545" }}
+                    ></i>
+                  </a>
+                </div>
               </div>
-       
+            ))}
+
+            <div>
+              <Button onClick={handleShow}>Add Address</Button>
+            </div>
           </div>
         </Modal.Body>
         <Modal.Footer>

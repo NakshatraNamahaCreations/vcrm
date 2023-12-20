@@ -12,7 +12,7 @@ function Dsrcallist() {
   const [dsrdata1, setdsrdata1] = useState([]);
   const [searchJobCatagory, setSearchJobCatagory] = useState("");
   const [searchCustomerName, setSearchCustomerName] = useState("");
-  const [searchCity, setSearchCity] = useState("");
+  const [city, setcity] = useState("");
   const [searchAddress, setSearchAddress] = useState("");
   const [searchContact, setSearchContact] = useState("");
   const [searchTechName, setSearchTechName] = useState("");
@@ -20,7 +20,7 @@ function Dsrcallist() {
   const [searchDesc, setSearchDesc] = useState("");
   const [searchpaymentMode, setsearchpaymentMode] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(25);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -32,37 +32,6 @@ function Dsrcallist() {
   useEffect(() => {
     getservicedata();
   }, [currentPage]); // Update data when category, date, or currentPage changes
-
-  // const getservicedata = async () => {
-  //   try {
-  //     let res = await axios.get(apiURL + "/getservicedatawithaddcalnew", {
-  //       params: {
-  //         category: category,
-  //         date: date,
-  //         page: currentPage,
-  //       },
-  //     });
-
-  //     if (res.status === 200) {
-  //       setTotalPages(res.data?.totalLength);
-  //       const filteredData = res.data?.runningdata.filter((item) => {
-  //         // Apply your search criteria here
-  //         return (
-  //           (searchJobCatagory === "" ||
-  //             item.jobCategory
-  //               .toLowerCase()
-  //               .includes(searchJobCatagory.toLowerCase())) &&
-
-  //         );
-  //       });
-
-  //       settreatmentData(res.data?.runningdata);
-  //       setSearchResults(res.data?.runningdata);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
 
   const getservicedata = async () => {
     try {
@@ -78,55 +47,6 @@ function Dsrcallist() {
       if (res.status === 200) {
         const allData = res.data?.runningdata;
         setTotalPages(res.data?.totalLength);
-        // Apply search criteria on the fetched data
-        let results = allData.filter((item) => {
-          return (
-            (searchJobCatagory === "" ||
-              item.jobCategory
-                .toLowerCase()
-                .includes(searchJobCatagory.toLowerCase())) &&
-            (searchCustomerName === "" ||
-              (item.customerData[0]?.customerName &&
-                item.customerData[0]?.customerName
-                  .toLowerCase()
-                  .includes(searchCustomerName.toLowerCase()))) &&
-            (searchCity === "" ||
-              (item.city &&
-                item.city.toLowerCase().includes(searchCity.toLowerCase()))) &&
-            (searchAddress === "" ||
-              (item.customerData[0]?.cnap &&
-                item.customerData[0]?.cnap
-                  .toLowerCase()
-                  .includes(searchAddress.toLowerCase())) ||
-              (item.customerData[0]?.rbhf &&
-                item.customerData[0]?.rbhf
-                  .toLowerCase()
-                  .includes(searchAddress.toLowerCase()))) &&
-            (searchContact === "" ||
-              item.customerData[0]?.mainContact
-                .toString()
-                .toLowerCase()
-                .includes(searchContact.toLowerCase())) &&
-            (searchTechName === "" ||
-              (item.dsrdata[0]?.TechorPMorVendorName &&
-                item.dsrdata[0]?.TechorPMorVendorName.toLowerCase().includes(
-                  searchTechName.toLowerCase()
-                ))) &&
-            (searchJobType === "" ||
-              (item.service &&
-                item.service
-                  .toLowerCase()
-                  .includes(searchJobType.toLowerCase()))) &&
-            (searchDesc === "" ||
-              (item.desc &&
-                item.desc.toLowerCase().includes(searchDesc.toLowerCase()))) &&
-            (searchpaymentMode === "" ||
-              (item.paymentMode &&
-                item.paymentMode
-                  .toLowerCase()
-                  .includes(searchpaymentMode.toLowerCase())))
-          );
-        });
 
         // Update state with filtered results
         setSearchResults(allData);
@@ -147,6 +67,46 @@ function Dsrcallist() {
 
       if (res.status === 200) {
         setdsrdata1(res.data.filterwithservicedata);
+      }
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  useEffect(() => {
+    filterData();
+  }, [
+    city,
+    searchCustomerName,
+    // searchTechName,
+    searchContact,
+    searchJobType,
+    searchDesc,
+  ]);
+
+  const filterData = async () => {
+    console.log("ccall the api ", city);
+    try {
+      const response = await axios.get(apiURL + "/serchfilterdsr", {
+        params: {
+          city,
+          searchCustomerName,
+          searchContact,
+          category,
+          date,
+          searchAddress,
+          searchJobType,
+          searchDesc,
+          searchpaymentMode,
+          // searchTechName,
+        },
+      });
+
+      if (response.status === 200) {
+        setSearchResults(response.data?.runningdata);
+        settreatmentData(response.data?.runningdata);
+      } else {
+        // Handle error
       }
     } catch (error) {
       // Handle error
@@ -175,11 +135,10 @@ function Dsrcallist() {
                 .includes(searchCustomerName.toLowerCase())
           );
         }
-        if (searchCity) {
+        if (city) {
           results = results.filter(
             (item) =>
-              item.city &&
-              item.city.toLowerCase().includes(searchCity.toLowerCase())
+              item.city && item.city.toLowerCase().includes(city.toLowerCase())
           );
         }
         if (searchAddress) {
@@ -253,7 +212,7 @@ function Dsrcallist() {
   }, [
     searchJobCatagory,
     searchCustomerName,
-    searchCity,
+    city,
     searchAddress,
     searchContact,
     searchJobType,
@@ -335,6 +294,42 @@ function Dsrcallist() {
     return matchingData[0]?.charge;
   };
 
+  const [selectedStatus, setSelectedStatus] = useState("");
+
+  // Function to handle legend item clicks and filter data
+  const handleLegendItemClick = (status) => {
+    setSelectedStatus(status);
+
+    // Use the original treatmentData if searchResults is empty
+    const dataToFilter =
+      searchResults.length > 0 ? searchResults : treatmentData;
+
+    // Logic to filter data based on the selected status
+    const filteredData = dataToFilter.filter((item) => {
+      switch (status) {
+        case "COMPLETED":
+          return item?.dsrdata[0]?.jobComplete === "YES"; // Filter for "Service Completed"
+        case "CANCELLED":
+          return item?.dsrdata[0]?.jobComplete === "CANCEL"; // Filter for "Service Cancelled"
+        case "startJobTime":
+          return item?.dsrdata[0]?.startJobTime; // Filter for "Service Started"
+        case "SCOMpleted":
+          return item?.dsrdata[0]?.endJobTime; // Filter for "Service Completed"
+        case "ASSIGNTECH":
+          return (
+            item?.dsrdata[0]?.jobComplete !== "YES" &&
+            item?.dsrdata[0]?.TechorPMorVendorName
+          ); // Filter for "Assigned for Technician"
+        case "NOTASSIGNTECH":
+          return !item?.dsrdata[0]; // Filter for "Assigned for Technician"
+        default:
+          return true;
+      }
+    });
+
+    setSearchResults(filteredData);
+  };
+
   return (
     <div className="web">
       <Header />
@@ -343,7 +338,8 @@ function Dsrcallist() {
         <div className="shadow-sm" style={{ border: "1px #cccccc solid" }}>
           <div
             className="ps-1 pe-1"
-            style={{ borderBottom: "1px #cccccc solid" }}
+            style={{ borderBottom: "1px #cccccc solid", cursor: "pointer" }}
+            onClick={() => handleLegendItemClick("NOTASSIGNTECH")}
           >
             NOT ASSIGNED
           </div>
@@ -351,7 +347,9 @@ function Dsrcallist() {
             className="ps-1 pe-1"
             style={{
               backgroundColor: "#e2e3e5",
+              cursor: "pointer",
             }}
+            onClick={() => handleLegendItemClick("ASSIGNTECH")}
           >
             ASSIGNED FOR TECHNICIAN
           </div>
@@ -359,25 +357,40 @@ function Dsrcallist() {
             className="ps-1 pe-1"
             style={{
               backgroundColor: "#ffeb3b",
+              cursor: "pointer",
             }}
+            onClick={() => handleLegendItemClick("startJobTime")}
           >
             SERVICE STARTED
           </div>
-          <div className="ps-1 pe-1" style={{ backgroundColor: "#4caf50" }}>
+          <div
+            className="ps-1 pe-1"
+            style={{ backgroundColor: "#4caf50", cursor: "pointer" }}
+            onClick={() => handleLegendItemClick("SCOMpleted")}
+          >
             SERIVCE COMPLETED
           </div>
-          <div className="ps-1 pe-1" style={{ backgroundColor: "#f44336" }}>
+          <div
+            className="ps-1 pe-1"
+            style={{ backgroundColor: "#f44336", cursor: "pointer" }}
+            onClick={() => handleLegendItemClick("CANCELLED")}
+          >
             SERIVCE CANCELLED
           </div>
-          <div className="ps-1 pe-1" style={{ backgroundColor: "#2196f3" }}>
+          <div
+            className="ps-1 pe-1"
+            style={{ backgroundColor: "#2196f3", cursor: "pointer" }}
+          >
             SERIVCE DELAYED
           </div>
           <div
             className="ps-1 pe-1"
-            style={{ backgroundColor: "rgb(182, 96, 255)" }}
+            style={{ backgroundColor: "rgb(182, 96, 255)", cursor: "pointer" }}
+            onClick={() => handleLegendItemClick("COMPLETED")}
           >
             CLOSED OPERATION MANAGER
           </div>
+          <b>Double click for filter </b>
         </div>
       </div>
 
@@ -430,11 +443,11 @@ function Dsrcallist() {
                 <th scope="col" className="table-head">
                   <select
                     className="vhs-table-input"
-                    value={searchCity}
-                    onChange={(e) => setSearchCity(e.target.value)}
+                    value={city}
+                    onChange={(e) => setcity(e.target.value)}
                   >
                     <option value="">Select</option>
-                    {[...new Set(treatmentData.map((city) => city.city))].map(
+                    {[...new Set(treatmentData?.map((city) => city.city))].map(
                       (uniqueCity) => (
                         <option value={uniqueCity} key={uniqueCity}>
                           {uniqueCity}
@@ -458,22 +471,6 @@ function Dsrcallist() {
                   />{" "}
                 </th>
                 <th scope="col" className="table-head">
-                  {/* <select
-                    className="vhs-table-input" //no Technician name
-                    value={searchTechName}
-                    onChange={(e) => setSearchTechName(e.target.value)}
-                  >
-                    <option value="">Select</option>
-                    {dsrdata.map((e) => (
-                      <option
-                        value={e.TechorPMorVendorName}
-                        key={e.TechorPMorVendorName}
-                      >
-                        {e.TechorPMorVendorName}{" "}
-                      </option>
-                    ))}
-                  </select>{" "} */}
-
                   <select
                     className="vhs-table-input"
                     value={searchTechName}
@@ -482,8 +479,8 @@ function Dsrcallist() {
                     <option value="">Select</option>
                     {[
                       ...new Set(
-                        treatmentData.map(
-                          (item) => item.dsrdata[0]?.TechorPMorVendorName
+                        treatmentData?.map(
+                          (item) => item?.dsrdata[0]?.TechorPMorVendorName
                         )
                       ),
                     ].map((uniqueName) => (
@@ -572,10 +569,6 @@ function Dsrcallist() {
                 <th scope="col" className="table-head">
                   Description
                 </th>
-
-                {/* <th scope="col" className="table-head">
-                  Amount
-                </th> */}
               </tr>
             </thead>
             <tbody>
@@ -605,15 +598,15 @@ function Dsrcallist() {
                     state={{
                       data: selectedData,
                       data1: date,
-                      TTname: selectedData.dsrdata[0]?.TechorPMorVendorName,
+                      TTname: selectedData?.dsrdata[0]?.TechorPMorVendorName,
                     }}
                   >
                     <td>{index + 1}</td>
                     {/* <td>{selectedData.category}</td> */}
                     <td>{date}</td>
-                    <td>{selectedData.selectedSlotText}</td>
+                    <td>{selectedData?.selectedSlotText}</td>
 
-                    <td>{selectedData.customerData[0]?.customerName}</td>
+                    <td>{selectedData?.customerData[0]?.customerName}</td>
 
                     {/* {selectedData.city ? (
                       <td>{selectedData.city}</td>
@@ -623,19 +616,21 @@ function Dsrcallist() {
                     <td>
                       {selectedData?.deliveryAddress
                         ? `
-                        ${selectedData.deliveryAddress?.platNo},
-                        ${selectedData.deliveryAddress?.address} - 
-                        ${selectedData.deliveryAddress?.landmark}
+                        ${selectedData?.deliveryAddress?.platNo},
+                        ${selectedData?.deliveryAddress?.address} - 
+                        ${selectedData?.deliveryAddress?.landmark}
                         `
                         : ""}
                     </td>
 
-                    <td>{selectedData.customerData[0]?.mainContact}</td>
+                    <td>{selectedData?.customerData[0]?.mainContact}</td>
 
                     <td>
-                      {selectedData.dsrdata &&
-                        selectedData.dsrdata.length > 0 && (
-                          <p>{selectedData.dsrdata[0]?.TechorPMorVendorName}</p>
+                      {selectedData?.dsrdata &&
+                        selectedData?.dsrdata.length > 0 && (
+                          <p>
+                            {selectedData?.dsrdata[0]?.TechorPMorVendorName}
+                          </p>
                         )}
 
                       {/* {passfunction(selectedData)} */}
@@ -681,26 +676,26 @@ function Dsrcallist() {
 
                     {/* <td>{dsrdata[0]?.workerName}</td> */}
 
-                    <td>{selectedData.service}</td>
+                    <td>{selectedData?.service}</td>
 
-                    {selectedData.type === "userapp" ? (
+                    {selectedData?.type === "userapp" ? (
                       <td>{selectedData?.GrandTotal}</td>
                     ) : (
                       <td>
-                        {selectedData.contractType === "AMC"
+                        {selectedData?.contractType === "AMC"
                           ? returndata(selectedData)
                             ? returndata(selectedData)
                             : "0"
                           : selectedData.serviceCharge}
                       </td>
                     )}
-                    {selectedData.type === "userapp" ? (
+                    {selectedData?.type === "userapp" ? (
                       <td>{selectedData.paymentMode}</td>
                     ) : (
                       <td>{SERVICEMode(selectedData)}</td>
                     )}
 
-                    <td>{selectedData.desc}</td>
+                    <td>{selectedData?.desc}</td>
                   </Link>
                 </tr>
               ))}
