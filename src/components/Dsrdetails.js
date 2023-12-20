@@ -99,7 +99,7 @@ function Dsrdetails() {
 
   const gettechnician = async () => {
     let res = await axios.get(apiURL + "/getalltechnician");
-    if ((res.status = 200)) {
+    if (res.status === 200) {
       const TDdata = res.data?.technician;
       const filteredTechnicians = TDdata.filter((technician) => {
         return technician.category.some((cat) => cat.name === data?.category);
@@ -144,14 +144,14 @@ function Dsrdetails() {
     let res = await axios.get(
       "https://api.vijayhomeservicebengaluru.in/api/userapp/getslots"
     );
-    if ((res.status = 200)) {
+    if (res.status === 200) {
       setslotesdata(res.data?.slots);
     }
   };
 
   const getnameof = async () => {
     let res = await axios.get(apiURL + "/getalltechnician");
-    if ((res.status = 200)) {
+    if (res.status === 200) {
       const TDdata = res.data?.technician;
       const filteredTechnicians = TDdata.filter((technician) => {
         return technician.category.some(
@@ -650,7 +650,7 @@ function Dsrdetails() {
         if (response.status === 200) {
           setShow1(false);
           alert("Updated");
-          window.location.assign(`/dsrcallist/${data1}/${data.category}`);
+          window.location.reload(``);
         }
       } catch (error) {
         if (error.response) {
@@ -675,7 +675,7 @@ function Dsrdetails() {
 
   const getcity = async () => {
     let res = await axios.get(apiURL + "/master/getcity");
-    if ((res.status = 200)) {
+    if (res.status === 200) {
       setcitydata(res.data?.mastercity);
     }
   };
@@ -701,7 +701,7 @@ function Dsrdetails() {
       await axios(config).then(function (response) {
         if (response.status === 200) {
           alert("Successfully Added");
-          window.location.assign(`/dsrcallist/${data1}/${data.category}`);
+          window.location.reload(``);
         }
       });
     } catch (error) {
@@ -1046,12 +1046,14 @@ function Dsrdetails() {
                       <td>
                         {data.type === "userapp" ? (
                           <>{data.GrandTotal}</>
-                        ) : (
+                        ) : data.contractType === "AMC" ? (
                           <>
                             {matchingData?.length > 0
                               ? matchingData[0]?.charge
                               : ""}
                           </>
+                        ) : (
+                          <>{data.GrandTotal}</>
                         )}
                       </td>
                     </tr>

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Quotethismonth() {
- 
   // Function to calculate the start and end dates of the current month
   const getThisMonthDates = () => {
     const today = new Date();
@@ -23,7 +22,6 @@ function Quotethismonth() {
   // Get the start and end dates of the current month
   const { startDate, endDate } = getThisMonthDates();
 
-  
   const navigate = useNavigate();
   const [enquiryflwdata, setenquiryflwdata] = useState([]);
   const apiURL = process.env.REACT_APP_API_URL;
@@ -43,19 +41,16 @@ function Quotethismonth() {
   const [searchResponse, setSearchResponse] = useState("");
   const [searchDesc, setSearchDesc] = useState("");
   const [searchNxtfoll, setSearchNxtfoll] = useState("");
-  const [searchBookedby,setsearchBookedby] = useState("");
+  const [searchBookedby, setsearchBookedby] = useState("");
   const [Type, setType] = useState("");
 
-
-
-  console.log("enquiryflwdata--",enquiryflwdata)
+  console.log("enquiryflwdata--", enquiryflwdata);
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
-
-    // Get today's date in the format 'YYYY-MM-DD'
-    const today = new Date().toISOString().split("T")[0];
+  // Get today's date in the format 'YYYY-MM-DD'
+  const today = new Date().toISOString().split("T")[0];
   useEffect(() => {
     getenquiryadd();
   }, []);
@@ -63,12 +58,16 @@ function Quotethismonth() {
   const getenquiryadd = async () => {
     let res = await axios.get(apiURL + "/getenquirydata");
     if (res.status === 200) {
-      setenquiryflwdata(res.data?.quotefollowup.filter(
-        (item) => item.nxtfoll >= startDate && item.nxtfoll <= endDate
-      ));
-      setSearchResults(res.data?.quotefollowup.filter(
-        (item) => item.nxtfoll >= startDate && item.nxtfoll <= endDate
-      )); // Update the searchResults state with the full data
+      setenquiryflwdata(
+        res.data?.quotefollowup.filter(
+          (item) => item.nxtfoll >= startDate && item.nxtfoll <= endDate
+        )
+      );
+      setSearchResults(
+        res.data?.quotefollowup.filter(
+          (item) => item.nxtfoll >= startDate && item.nxtfoll <= endDate
+        )
+      ); // Update the searchResults state with the full data
     }
   };
   let i = 0;
@@ -105,8 +104,8 @@ function Quotethismonth() {
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
               .toLowerCase()
               .includes(searchContact.toLowerCase())
         );
@@ -126,8 +125,8 @@ function Quotethismonth() {
           (item) =>
             item.enquirydata[0]?.intrestedfor &&
             item.enquirydata[0]?.intrestedfor
-            .toLowerCase()
-            .includes(searchServices.toLowerCase())
+              .toLowerCase()
+              .includes(searchServices.toLowerCase())
         );
       } //
       if (searchCity) {
@@ -142,8 +141,10 @@ function Quotethismonth() {
       if (searchTotal) {
         results = results.filter(
           (item) =>
-          item?.quotedata[0]?.netTotal &&
-            item.quotedata[0]?.netTotal.toLowerCase().includes(searchTotal.toLowerCase())
+            item?.quotedata[0]?.netTotal &&
+            item.quotedata[0]?.netTotal
+              .toLowerCase()
+              .includes(searchTotal.toLowerCase())
         );
       }
       if (searchExecutive) {
@@ -159,9 +160,9 @@ function Quotethismonth() {
         results = results.filter(
           (item) =>
             item.quotedata[0]?.Bookedby &&
-            item.quotedata[0]?.Bookedby
-              .toLowerCase()
-              .includes(searchBookedby.toLowerCase())
+            item.quotedata[0]?.Bookedby.toLowerCase().includes(
+              searchBookedby.toLowerCase()
+            )
         );
       }
       if (searchStaff) {
@@ -213,37 +214,36 @@ function Quotethismonth() {
     searchResponse,
     searchDesc,
     searchNxtfoll,
-    searchBookedby
+    searchBookedby,
   ]);
 
   const click = (data) => {
     navigate(`/quotedetails/${data.EnquiryId}`);
   };
 
-   // Pagination logic
-   const totalPages = Math.ceil(searchResults.length / itemsPerPage);
-   const pageOptions = Array.from(
-     { length: totalPages },
-     (_, index) => index + 1
-   );
- 
-   // Get current items for the current page
-   const indexOfLastItem = currentPage * itemsPerPage;
-   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-   const currentItems = searchResults.slice(indexOfFirstItem, indexOfLastItem);
- 
+  // Pagination logic
+  const totalPages = Math.ceil(searchResults.length / itemsPerPage);
+  const pageOptions = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
 
-   // Change page
+  // Get current items for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = searchResults.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage);
   };
 
   return (
     <div className="web">
-    <Header />
-    <Quotefollowupnav />
+      <Header />
+      <Quotefollowupnav />
 
-    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <div className="shadow-sm" style={{ border: "1px #cccccc solid" }}>
           <div
             className="ps-1 pe-1"
@@ -269,32 +269,30 @@ function Quotethismonth() {
           >
             CONFIRMED
           </div>
-         
         </div>
       </div>
-    <div className="row m-auto">
-      <div className="col-md-12">
+      <div className="row m-auto">
+        <div className="col-md-12">
+          {/* Pagination */}
+          <div className="pagination">
+            <span>Page </span>
+            <select
+              className="m-1"
+              value={currentPage}
+              onChange={(e) => handlePageChange(Number(e.target.value))}
+            >
+              {pageOptions.map((page) => (
+                <option value={page} key={page}>
+                  {page}
+                </option>
+              ))}
+            </select>
+            <span> of {totalPages}</span>
+          </div>
 
-         {/* Pagination */}
-         <div className="pagination">
-          <span>Page </span>
-          <select
-          className="m-1"
-            value={currentPage}
-            onChange={(e) => handlePageChange(Number(e.target.value))}
-          >
-            {pageOptions.map((page) => (
-              <option value={page} key={page}>
-                {page}
-              </option>
-            ))}
-          </select>
-          <span> of {totalPages}</span>
-        </div>
-
-        <table >
-          <thead>
-          <tr className="bg ">
+          <table>
+            <thead>
+              <tr className="bg ">
                 <th scope="col" className="bor">
                   <input className="vhs-table-input" />{" "}
                 </th>
@@ -405,7 +403,7 @@ function Quotethismonth() {
                     value={searchBookedby}
                     onChange={(e) => setsearchBookedby(e.target.value)}
                   />{" "}
-                </th> 
+                </th>
                 <th scope="col" className="bor">
                   <input
                     className="vhs-table-input"
@@ -422,7 +420,6 @@ function Quotethismonth() {
                   />{" "}
                 </th>
 
-              
                 <th scope="col" className="bor">
                   <input
                     className="vhs-table-input"
@@ -438,81 +435,81 @@ function Quotethismonth() {
                   />{" "}
                 </th> */}
                 <th scope="col" className="bor">
-                <select
-                    
-                    onChange={(e) => setType(e.target.value)}
-                  >
+                  <select onChange={(e) => setType(e.target.value)}>
                     <option>Select </option>
                     <option value="NOT SHARED">NOT SHARED </option>
                     <option value="QUOTE SHARED">QUOTE SHARED </option>
                     <option value="CONFIRMED">CONFIRMED </option>
-                   
                   </select>{" "}
                 </th>
-               
               </tr>
-            <tr className="bg">
-              <th className="bor">#</th>
-              <th className="bor">Category</th>
-              <th className="bor">QId</th>
-              <th className="bor">Q Dt-Tm</th>
-              <th className="bor">Name</th>
-              <th className="bor">Contact</th>
-              <th className="bor">Address</th>
-              <th className="bor">City</th>
-              <th className="bor">Service</th>
-              <th className="bor">QAmt</th>
-              <th className="bor">Executive</th>
-              <th className="bor">Booked by</th>
-              <th className="bor">Last F/W Dt</th>
-              <th className="bor">Next F/W Dt</th>
-              <th className="bor">Desc</th>
-              <th className="bor">Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((item) => (
-              <a onClick={() => click(item)} className="tbl">
-                <tr className="trnew" style={{
-                  backgroundColor: item.response === "Confirmed"
-                    ? "#ffb9798f"
-                    : item.response ===""
-                      ? "#ffb9798f"
-                      : "white",
-                }}>
-                  <td>{i++}</td>
-                  <td>{item?.enquirydata[0]?.category}</td>
-                  <td>{item?.quotedata[0]?.quoteId}</td>
-                  <td>
-                    {item?.quotedata[0]?.date}
-                    <br />
-                    {item?.quotedata[0]?.time}
-                  </td>
-                  <td>{item?.enquirydata[0]?.name}</td>
-                  <td>{item?.enquirydata[0]?.contact1}</td>
-                  <td>{item?.enquirydata[0]?.address}</td>
+              <tr className="bg">
+                <th className="bor">#</th>
+                <th className="bor">Category</th>
+                <th className="bor">QId</th>
+                <th className="bor">Q Dt-Tm</th>
+                <th className="bor">Name</th>
+                <th className="bor">Contact</th>
+                <th className="bor">Address</th>
+                <th className="bor">City</th>
+                <th className="bor">Service</th>
+                <th className="bor">QAmt</th>
+                <th className="bor">Executive</th>
+                <th className="bor">Booked by</th>
+                <th className="bor">Last F/W Dt</th>
+                <th className="bor">Next F/W Dt</th>
+                <th className="bor">Desc</th>
+                <th className="bor">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((item) => (
+                <a onClick={() => click(item)} className="tbl">
+                  <tr
+                    className="trnew"
+                    style={{
+                      backgroundColor:
+                        item.response === "Confirmed"
+                          ? "#ffb9798f"
+                          : item.response === ""
+                          ? "#ffb9798f"
+                          : "white",
+                    }}
+                  >
+                    <td>{i++}</td>
+                    <td>{item?.enquirydata[0]?.category}</td>
+                    <td>{item?.quotedata[0]?.quoteId}</td>
+                    <td>
+                      {item?.quotedata[0]?.date}
+                      <br />
+                      {item?.quotedata[0]?.time}
+                    </td>
+                    <td>{item?.enquirydata[0]?.name}</td>
+                    <td>{item?.enquirydata[0]?.mobile}</td>
+                    <td>{item?.enquirydata[0]?.address}</td>
 
-                  <td>{item?.enquirydata[0]?.city}</td>
-                  <td>{item?.enquirydata[0]?.intrestedfor}</td>
-                  <td>{item?.quotedata[0]?.netTotal}</td>
-                  <td>{item?.enquirydata[0]?.executive}</td>
-                  <td>{item?.quotedata[0]?.Bookedby}</td>
-                  <td>{item?.enquiryfollowupdata[0]?.folldate}</td>
-                  <td>{item?.nxtfoll}</td>
-                  <td>{item?.desc}</td>
-                  {item?.response === "Confirmed" ?
-                    <td>CONFIRMED</td>: <td>NOT SHARED</td>
-                    
-                  }
-                </tr>
-              </a>
-              // </Link>
-            ))}
-          </tbody>
-        </table>
+                    <td>{item?.enquirydata[0]?.city}</td>
+                    <td>{item?.enquirydata[0]?.intrestedfor}</td>
+                    <td>{item?.quotedata[0]?.netTotal}</td>
+                    <td>{item?.enquirydata[0]?.executive}</td>
+                    <td>{item?.quotedata[0]?.Bookedby}</td>
+                    <td>{item?.enquiryfollowupdata[0]?.folldate}</td>
+                    <td>{item?.nxtfoll}</td>
+                    <td>{item?.desc}</td>
+                    {item?.response === "Confirmed" ? (
+                      <td>CONFIRMED</td>
+                    ) : (
+                      <td>NOT SHARED</td>
+                    )}
+                  </tr>
+                </a>
+                // </Link>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
   );
 }
 

@@ -8,7 +8,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 function Enquiryadd() {
   const admin = JSON.parse(sessionStorage.getItem("admin"));
   const { enquiryid } = useParams();
-const navigate=useNavigate();
+  const navigate = useNavigate();
   const [data, setdata] = useState([]);
   const [serivceName, setSeviceName] = useState("");
   const [citydata, setcitydata] = useState([]);
@@ -49,15 +49,14 @@ const navigate=useNavigate();
     }
   };
 
-  console.log(data)
+  console.log(data);
   const getServiceByCategory = async () => {
     try {
       let res = await axios.post(apiURL + `/userapp/getservicebycategory/`, {
-        category:category,
+        category: category,
       });
       if (res.status === 200) {
         setServiceData(res.data?.serviceData);
-     
       } else {
         setServiceData([]);
       }
@@ -81,11 +80,11 @@ const navigate=useNavigate();
         headers: { "content-type": "application/json" },
         data: {
           EnquiryId: EnquiryId,
-          enquirydate: enquirydate,
+          date: enquirydate,
           executive: admin.displayname,
           name: name,
-          time: time,
-          contact1: contact1,
+          Time: time,
+          mobile: contact1,
           email: email,
           contact2: contact2,
           address: address,
@@ -96,15 +95,13 @@ const navigate=useNavigate();
           reference3: reference3,
           comment: comment,
           intrestedfor: intrestedfor,
-        
         },
       };
       await axios(config).then(function (response) {
         if (response.status === 200) {
           console.log("success");
           alert(" Added");
-          navigate(`/enquirydetail/${enquiryid}`)
- 
+          navigate(`/enquirydetail/${enquiryid}`);
         }
       });
     } catch (error) {
@@ -131,8 +128,8 @@ const navigate=useNavigate();
     let res = await axios.get(apiURL + `/getenquiry`);
     if ((res.status = 200)) {
       console.log(res.data?.enquiryadd);
-      console.log(res.data?.enquiryadd.filter((i)=>i.EnquiryId == enquiryid))
-      setdata(res.data?.enquiryadd.filter((a)=>a.EnquiryId == enquiryid));
+      console.log(res.data?.enquiryadd.filter((i) => i.EnquiryId == enquiryid));
+      setdata(res.data?.enquiryadd.filter((a) => a.EnquiryId == enquiryid));
     }
   };
 
@@ -177,7 +174,7 @@ const navigate=useNavigate();
                   <div className="col-md-4">
                     <div className="vhs-input-label">Enquiry Date</div>
                     <div className="group pt-1 vhs-non-editable">
-                      {data[0]?.enquirydate}
+                      {data[0]?.date}
                     </div>
                   </div>
                   <div className="col-md-4">
@@ -187,7 +184,7 @@ const navigate=useNavigate();
                       <span className="text-danger"> *</span>
                     </div>
                     <div className="group pt-1 vhs-non-editable">
-                  {admin.displayname}
+                      {admin.displayname}
                     </div>
                   </div>
                 </div>
@@ -230,7 +227,7 @@ const navigate=useNavigate();
                         type="text"
                         className="col-md-12 vhs-input-value"
                         onChange={(e) => setcontact1(e.target.value)}
-                        defaultValue={data[0]?.contact1}
+                        defaultValue={data[0]?.mobile}
                       />
                     </div>
                   </div>
@@ -369,7 +366,7 @@ const navigate=useNavigate();
                       <span className="text-danger"> *</span>
                     </div>
                     <div className="group pt-1">
-                    <select
+                      <select
                         className="col-md-12 vhs-input-value"
                         onChange={(e) => {
                           const selectedService = serviceData.find(
@@ -385,7 +382,7 @@ const navigate=useNavigate();
                         <option>---SELECT---</option>
                         {serviceData.map((item) => (
                           <option key={item.id} value={item._id}>
-                         {item.Subcategory}  - {item.serviceName}
+                            {item.Subcategory} - {item.serviceName}
                           </option>
                         ))}
                       </select>

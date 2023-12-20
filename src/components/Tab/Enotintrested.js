@@ -6,7 +6,7 @@ import Table from "react-bootstrap/Table";
 import { Link, useNavigate } from "react-router-dom";
 
 function Enotintrested() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [filterdata, setfilterdata] = useState([]);
   const apiURL = process.env.REACT_APP_API_URL;
   const [searchResults, setSearchResults] = useState([]);
@@ -24,11 +24,11 @@ function Enotintrested() {
   const [searchStaff, setSearchStaff] = useState("");
   const [searchResponse, setSearchResponse] = useState("");
   const [searchDesc, setSearchDesc] = useState("");
-  const [searchNxtfoll, setSearchNxtfoll] = useState("")
+  const [searchNxtfoll, setSearchNxtfoll] = useState("");
 
- // Pagination state
- const [currentPage, setCurrentPage] = useState(1);
- const [itemsPerPage] = useState(10);
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   useEffect(() => {
     getenquiry();
@@ -39,9 +39,11 @@ function Enotintrested() {
     let res = await axios.get(apiURL + "/getallflwdata");
     if ((res.status = 200)) {
       setfilterdata(
-        res.data?.enquiryfollowup.filter((i)=>i.response === "Not Intrested"));
-        setSearchResults(
-          res.data?.enquiryfollowup.filter((i)=>i.response === "Not Intrested"));
+        res.data?.enquiryfollowup.filter((i) => i.response === "Not Intrested")
+      );
+      setSearchResults(
+        res.data?.enquiryfollowup.filter((i) => i.response === "Not Intrested")
+      );
     }
   };
   const enquirydetail = (data) => {
@@ -62,32 +64,36 @@ function Enotintrested() {
       if (searchDateTime) {
         results = results.filter(
           (item) =>
-            (item.enquirydata[0]?.enquirydate &&
-              item.enquirydate
-                .toLowerCase()
-                .includes(searchDateTime.toLowerCase())) 
+            item.enquirydata[0]?.date &&
+            item.date.toLowerCase().includes(searchDateTime.toLowerCase())
         );
       }
-     
+
       if (searchName) {
         results = results.filter(
           (item) =>
             item.enquirydata[0]?.name &&
-            item.enquirydata[0]?.name.toLowerCase().includes(searchName.toLowerCase())
+            item.enquirydata[0]?.name
+              .toLowerCase()
+              .includes(searchName.toLowerCase())
         );
       }
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1.toLowerCase().includes(searchContact.toLowerCase())
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
+              .toLowerCase()
+              .includes(searchContact.toLowerCase())
         );
       }
       if (searchAddress) {
         results = results.filter(
           (item) =>
             item.enquirydata[0]?.address &&
-            item.enquirydata[0]?.address.toLowerCase().includes(searchAddress.toLowerCase())
+            item.enquirydata[0]?.address
+              .toLowerCase()
+              .includes(searchAddress.toLowerCase())
         );
       }
       if (searchReference) {
@@ -112,7 +118,9 @@ function Enotintrested() {
         results = results.filter(
           (item) =>
             item.enquirydata[0]?.city &&
-            item.enquirydata[0]?.city.toLowerCase().includes(searchCity.toLowerCase())
+            item.enquirydata[0]?.city
+              .toLowerCase()
+              .includes(searchCity.toLowerCase())
         );
       }
       if (searchInterest) {
@@ -135,9 +143,7 @@ function Enotintrested() {
         results = results.filter(
           (item) =>
             item.staffname &&
-            item.staffname
-              .toLowerCase()
-              .includes(searchStaff.toLowerCase())
+            item.staffname.toLowerCase().includes(searchStaff.toLowerCase())
         );
       }
       if (searchResponse) {
@@ -151,18 +157,14 @@ function Enotintrested() {
         results = results.filter(
           (item) =>
             item.desc &&
-            item.desc
-              .toLowerCase()
-              .includes(searchDesc.toLowerCase())
+            item.desc.toLowerCase().includes(searchDesc.toLowerCase())
         );
       }
       if (searchNxtfoll) {
         results = results.filter(
           (item) =>
-            (item.nxtfoll &&
-              item.nxtfoll
-                .toLowerCase()
-                .includes(searchNxtfoll.toLowerCase())) 
+            item.nxtfoll &&
+            item.nxtfoll.toLowerCase().includes(searchNxtfoll.toLowerCase())
         );
       }
       // results = results.map((item) => ({
@@ -185,7 +187,7 @@ function Enotintrested() {
     searchStaff,
     searchResponse,
     searchDesc,
-    searchNxtfoll
+    searchNxtfoll,
   ]);
 
   function getColor(colorcode) {
@@ -223,11 +225,11 @@ function Enotintrested() {
 
       <div className="row m-auto">
         <div className="col-md-12">
-           {/* Pagination */}
-           <div className="pagination">
+          {/* Pagination */}
+          <div className="pagination">
             <span>Page </span>
             <select
-            className="m-1"
+              className="m-1"
               value={currentPage}
               onChange={(e) => handlePageChange(Number(e.target.value))}
             >
@@ -239,7 +241,7 @@ function Enotintrested() {
             </select>
             <span> of {totalPages}</span>
           </div>
-        <table>
+          <table>
             <thead>
               <tr className="tr ">
                 <th scope="col">
@@ -410,7 +412,7 @@ function Enotintrested() {
                     <td>{item.enquirydata[0]?.enquirydate}</td>
 
                     <td>{item.enquirydata[0]?.name}</td>
-                    <td>{item.enquirydata[0]?.contact1}</td>
+                    <td>{item.enquirydata[0]?.mobile}</td>
                     <td>{item.enquirydata[0]?.address}</td>
                     <td>{item.enquirydata[0]?.city}</td>
 

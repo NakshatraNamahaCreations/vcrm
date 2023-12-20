@@ -183,7 +183,7 @@
 //       apiURL + `/getenquiryquote`
 //     );
 //     if (res.status === 200) {
-      
+
 //       setquotepagedata(res.data?.enquiryadd);
 //       console.log("res.data?.enquiryadd",res.data?.enquiryadd.filter((i)=>i.EnquiryId == EnquiryId))
 //     }
@@ -201,7 +201,6 @@
 //       console.error("Error fetching treatment:", error);
 //     }
 //   };
-
 
 //   useEffect(() => {
 //     getquote();
@@ -503,110 +502,110 @@
 //       : total - adjustments
 //   );
 
-  // const [whatsappdata, setwhatsappdata] = useState([]);
-  // useEffect(() => {
-  //   getwhatsapptemplate();
-  // }, []);
+// const [whatsappdata, setwhatsappdata] = useState([]);
+// useEffect(() => {
+//   getwhatsapptemplate();
+// }, []);
 
-  // const getwhatsapptemplate = async () => {
-  //   try {
-  //     let res = await axios.get(apiURL + "/getwhatsapptemplate");
-  //     if (res.status === 200) {
-  //       // console.log("whatsapp template", res.data);
-  //       let getTemplateDatails = res.data?.whatsapptemplate?.filter(
-  //         (item) => item.templatename === "Send Invoice Link"
-  //       );
-  //       setwhatsappdata(getTemplateDatails);
-  //     }
-  //   } catch (error) {
-  //     console.error("err", error);
-  //   }
-  // };
+// const getwhatsapptemplate = async () => {
+//   try {
+//     let res = await axios.get(apiURL + "/getwhatsapptemplate");
+//     if (res.status === 200) {
+//       // console.log("whatsapp template", res.data);
+//       let getTemplateDatails = res.data?.whatsapptemplate?.filter(
+//         (item) => item.templatename === "Send Invoice Link"
+//       );
+//       setwhatsappdata(getTemplateDatails);
+//     }
+//   } catch (error) {
+//     console.error("err", error);
+//   }
+// };
 
-  // const printquote = () => {
-  //   window.location.assign(`/quotationterm?id=${EnquiryId}`);
-  // };
+// const printquote = () => {
+//   window.location.assign(`/quotationterm?id=${EnquiryId}`);
+// };
 
-  // const GoToInvoice = () => {
-  //   if (whatsappdata.length > 0) {
-  //     const selectedResponse = whatsappdata[0];
-  //     const invoiceLink = `quotationterm?id=${EnquiryId}`;
-  //     makeApiCall(
-  //       selectedResponse,
-  //       8792460466,
-  //       // data.customerData[0]?.mainContact,
-  //       invoiceLink
-  //     );
-  //   } else {
-  //     console.error("whatsappdata is empty. Cannot proceed.");
-  //     alert("Not Added");
-  //   }
-  //   // Navigate(`/dsrquote/${data}`);
-  // };
+// const GoToInvoice = () => {
+//   if (whatsappdata.length > 0) {
+//     const selectedResponse = whatsappdata[0];
+//     const invoiceLink = `quotationterm?id=${EnquiryId}`;
+//     makeApiCall(
+//       selectedResponse,
+//       8792460466,
+//       // data.customerData[0]?.mainContact,
+//       invoiceLink
+//     );
+//   } else {
+//     console.error("whatsappdata is empty. Cannot proceed.");
+//     alert("Not Added");
+//   }
+//   // Navigate(`/dsrquote/${data}`);
+// };
 
-  // const makeApiCall = async (selectedResponse, contactNumber, invoiceId) => {
-  //   const apiURL =
-  //     "https://wa.chatmybot.in/gateway/waunofficial/v1/api/v2/message";
-  //   const accessToken = "c7475f11-97cb-4d52-9500-f458c1a377f4";
+// const makeApiCall = async (selectedResponse, contactNumber, invoiceId) => {
+//   const apiURL =
+//     "https://wa.chatmybot.in/gateway/waunofficial/v1/api/v2/message";
+//   const accessToken = "c7475f11-97cb-4d52-9500-f458c1a377f4";
 
-  //   const contentTemplate = selectedResponse?.template || "";
+//   const contentTemplate = selectedResponse?.template || "";
 
-  //   if (!contentTemplate) {
-  //     console.error("Content template is empty. Cannot proceed.");
-  //     return;
-  //   }
-  //   // console.log("91" + data.customerData[0]?.mainContact);
-  //   const content = contentTemplate.replace(/\{Customer_name\}/g, 8792460466);
-  //   const serviceName = content.replace(/\{Service_name\}/g, data.service);
-  //   const serivePrice = serviceName.replace(
-  //     /\{Service_amount\}/g,
-  //     data.serviceCharge
-  //   );
+//   if (!contentTemplate) {
+//     console.error("Content template is empty. Cannot proceed.");
+//     return;
+//   }
+//   // console.log("91" + data.customerData[0]?.mainContact);
+//   const content = contentTemplate.replace(/\{Customer_name\}/g, 8792460466);
+//   const serviceName = content.replace(/\{Service_name\}/g, data.service);
+//   const serivePrice = serviceName.replace(
+//     /\{Service_amount\}/g,
+//     data.serviceCharge
+//   );
 
-  //   const invoiceUrl = `https://vijayhomeservicebengaluru.in/dsr_invoice_bill?id=${EnquiryId}`;
+//   const invoiceUrl = `https://vijayhomeservicebengaluru.in/dsr_invoice_bill?id=${EnquiryId}`;
 
-  //   console.log("invoiceUrl", invoiceUrl);
-  //   const invoiceLink = serivePrice.replace(
-  //     /\{Invoice_link\}/g,
-  //     `[Click to view invoice](${invoiceUrl})`
-  //   );
+//   console.log("invoiceUrl", invoiceUrl);
+//   const invoiceLink = serivePrice.replace(
+//     /\{Invoice_link\}/g,
+//     `[Click to view invoice](${invoiceUrl})`
+//   );
 
-  //   // Replace <p> with line breaks and remove HTML tags
-  //   const convertedText = invoiceLink
-  //     .replace(/<p>/g, "\n")
-  //     .replace(/<\/p>/g, "")
-  //     .replace(/<br>/g, "\n")
-  //     .replace(/&nbsp;/g, "")
-  //     .replace(/<strong>(.*?)<\/strong>/g, "<b>$1</b>")
-  //     .replace(/<[^>]*>/g, "");
+//   // Replace <p> with line breaks and remove HTML tags
+//   const convertedText = invoiceLink
+//     .replace(/<p>/g, "\n")
+//     .replace(/<\/p>/g, "")
+//     .replace(/<br>/g, "\n")
+//     .replace(/&nbsp;/g, "")
+//     .replace(/<strong>(.*?)<\/strong>/g, "<b>$1</b>")
+//     .replace(/<[^>]*>/g, "");
 
-  //   const requestData = [
-  //     {
-  //       dst: "91" + contactNumber,
-  //       messageType: "0",
-  //       textMessage: {
-  //         content: convertedText,
-  //       },
-  //     },
-  //   ];
-  //   try {
-  //     const response = await axios.post(apiURL, requestData, {
-  //       headers: {
-  //         "access-token": accessToken,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
+//   const requestData = [
+//     {
+//       dst: "91" + contactNumber,
+//       messageType: "0",
+//       textMessage: {
+//         content: convertedText,
+//       },
+//     },
+//   ];
+//   try {
+//     const response = await axios.post(apiURL, requestData, {
+//       headers: {
+//         "access-token": accessToken,
+//         "Content-Type": "application/json",
+//       },
+//     });
 
-  //     if (response.status === 200) {
-  //       setWhatsappTemplate(response.data);
-  //       alert("Sent");
-  //     } else {
-  //       console.error("API call unsuccessful. Status code:", response.status);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error making API call:", error);
-  //   }
-  // };
+//     if (response.status === 200) {
+//       setWhatsappTemplate(response.data);
+//       alert("Sent");
+//     } else {
+//       console.error("API call unsuccessful. Status code:", response.status);
+//     }
+//   } catch (error) {
+//     console.error("Error making API call:", error);
+//   }
+// };
 
 //   return (
 //     <div className="web">
@@ -1340,7 +1339,6 @@
 
 // export default Quotedetails;
 
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../layout/Header";
@@ -1405,7 +1403,7 @@ function Quotedetails() {
   const [paymentAmount, setPaymentAmount] = useState("");
   const [colorcode, setcolorcode] = useState("");
   const [advpaymentdata, setAdvPaymentData] = useState([]);
-  
+
   const getquote = async () => {
     let res = await axios.get(apiURL + "/getquote");
     if ((res.status = 200)) {
@@ -1500,14 +1498,15 @@ function Quotedetails() {
           headers: { "content-type": "application/json" },
           data: {
             EnquiryId: EnquiryId,
-            number:enquirydata[0]?.contact1,
+            number: enquirydata[0]?.mobile,
             category: category,
             region: region,
             material: material,
             job: jobName,
             qty: qty,
             rate: rate ? rate : ajobdatarate?.rate,
-            subtotal: qty && (rate ? qty * rate : qty * (ajobdatarate?.rate || 0)),
+            subtotal:
+              qty && (rate ? qty * rate : qty * (ajobdatarate?.rate || 0)),
             note: note,
           },
         };
@@ -1522,17 +1521,13 @@ function Quotedetails() {
       }
     }
   };
-useEffect(() => {
-  
-  getquotepage();
-
-}, [EnquiryId])
-
+  useEffect(() => {
+    getquotepage();
+  }, [EnquiryId]);
 
   const getquotepage = async () => {
     let res = await axios.get(apiURL + "/getenquiryquote");
     if ((res.status = 200)) {
-    
       setquotepagedata(
         res.data?.enquiryadd.filter((item) => item.EnquiryId == EnquiryId)
       );
@@ -1665,7 +1660,7 @@ useEffect(() => {
           headers: { "content-type": "application/json" },
           data: {
             EnquiryId: EnquiryId,
-            number:enquirydata[0]?.contact1,
+            number: enquirydata[0]?.mobile,
             GST: Gst,
             projectType: projecttype,
             qamt: netTotal,
@@ -1709,7 +1704,7 @@ useEffect(() => {
             EnquiryId: EnquiryId,
             GST: Gst,
             projectType: projecttype,
-            number:enquirydata[0]?.contact1,
+            number: enquirydata[0]?.mobile,
             qamt: netTotal,
             adjustments: adjustments,
             SUM: total,
@@ -1750,36 +1745,31 @@ useEffect(() => {
     setnetTotal(adjustedNetTotal);
   }, [adjustments, Gst]);
 
-
   const postconvertcustomer = async (e) => {
-
     e.preventDefault();
     try {
-      const phoneNumber = enquirydata[0]?.contact1;
-  
+      const phoneNumber = enquirydata[0]?.mobile;
+
       if (phoneNumber) {
-        const res = await axios.post(apiURL + `/findcustomerwithnumber/${phoneNumber}`);
-  
+        const res = await axios.post(
+          apiURL + `/findcustomerwithnumber/${phoneNumber}`
+        );
+
         if (res.status === 200) {
           const customerData = res.data.customer;
-  
+
           navigate(`/customersearchdetails/${customerData?._id}`);
-         
-    
-        }
-        else {
-          console.log('Phone number not available');
+        } else {
+          console.log("Phone number not available");
           navigate(`/convertcustomer/${enquirydata[0]?.EnquiryId}`);
         }
-      } 
+      }
     } catch (error) {
       console.error("Error fetching customer:", error);
       navigate(`/convertcustomer/${enquirydata[0]?.EnquiryId}`);
       // Handle errors accordingly
     }
   };
-  
-  
 
   // Assuming quotepagedata is an array of objects with quotefollowup property
   const confirmedResponses = quotepagedata[0]?.quotefollowup.filter(
@@ -1875,16 +1865,14 @@ useEffect(() => {
     }
   };
 
-
-
   const GoToInvoice = () => {
     if (whatsappdata.length > 0) {
       const selectedResponse = whatsappdata[0];
       const invoiceLink = `quotations?id=${EnquiryId}`;
       makeApiCall(
         selectedResponse,
-       
-        quotepagedata[0]?.contact1,
+
+        quotepagedata[0]?.mobile,
         invoiceLink
       );
     } else {
@@ -1906,7 +1894,10 @@ useEffect(() => {
       return;
     }
     // console.log("91" + data.customerData[0]?.mainContact);
-    const content = contentTemplate.replace(/\{Customer_name\}/g,   quotepagedata[0]?.name);
+    const content = contentTemplate.replace(
+      /\{Customer_name\}/g,
+      quotepagedata[0]?.name
+    );
     const serviceName = content.replace(/\{Service_name\}/g, data.service);
     const serivePrice = serviceName.replace(
       /\{Service_amount\}/g,
@@ -1914,7 +1905,6 @@ useEffect(() => {
     );
 
     const invoiceUrl = `http://vijayhomeservicebengaluru.in/quotations?id=${EnquiryId}`;
-
 
     const invoiceLink = serivePrice.replace(
       /\{Quote_link\}/g,
@@ -1948,7 +1938,6 @@ useEffect(() => {
       });
 
       if (response.status === 200) {
-       
         alert("Sent");
         window.location.reload();
       } else {
@@ -1958,7 +1947,7 @@ useEffect(() => {
       console.error("Error making API call:", error);
     }
   };
-  console.log("advpaymentdata[0]",advpaymentdata[0])
+  console.log("advpaymentdata[0]", advpaymentdata[0]);
 
   return (
     <div className="web">
@@ -2040,9 +2029,9 @@ useEffect(() => {
                   <div className="col-md-4">
                     <div className="">
                       <b>Mobile No : </b>
-                      {enquirydata[0]?.contact1}{" "}
+                      {enquirydata[0]?.mobile}{" "}
                       <a
-                        href={`https://wa.me/+91${enquirydata[0]?.contact1}`}
+                        href={`https://wa.me/+91${enquirydata[0]?.mobile}`}
                         target="_blank"
                       >
                         <i
@@ -2429,7 +2418,11 @@ useEffect(() => {
                   </button>
                 </div> */}
                 <div className="col-md-2 ">
-                  <button className="vhs-button" style={{ width: "200px" }}     onClick={GoToInvoice}>
+                  <button
+                    className="vhs-button"
+                    style={{ width: "200px" }}
+                    onClick={GoToInvoice}
+                  >
                     Send Quote by Whatsapp
                   </button>
                 </div>
@@ -2697,4 +2690,3 @@ useEffect(() => {
 }
 
 export default Quotedetails;
-

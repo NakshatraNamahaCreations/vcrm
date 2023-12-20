@@ -30,7 +30,6 @@ function Etoday() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
-  
   // Get today's date in the format 'YYYY-MM-DD'
   const today = new Date().toISOString().split("T")[0];
 
@@ -67,10 +66,8 @@ function Etoday() {
       if (searchDateTime) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.enquirydate &&
-            item.enquirydate
-              .toLowerCase()
-              .includes(searchDateTime.toLowerCase())
+            item.enquirydata[0]?.date &&
+            item.date.toLowerCase().includes(searchDateTime.toLowerCase())
         );
       }
 
@@ -86,8 +83,8 @@ function Etoday() {
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
               .toLowerCase()
               .includes(searchContact.toLowerCase())
         );
@@ -232,7 +229,7 @@ function Etoday() {
           <div className="pagination">
             <span>Page </span>
             <select
-            className="m-1"
+              className="m-1"
               value={currentPage}
               onChange={(e) => handlePageChange(Number(e.target.value))}
             >
@@ -405,10 +402,10 @@ function Etoday() {
                   >
                     <td>{index + 1}</td>
                     <td>{item.category}</td>
-                    <td>{item.enquirydata[0]?.enquirydate}</td>
+                    <td>{item.enquirydata[0]?.date}</td>
 
                     <td>{item.enquirydata[0]?.name}</td>
-                    <td>{item.enquirydata[0]?.contact1}</td>
+                    <td>{item.enquirydata[0]?.mobile}</td>
                     <td>{item.enquirydata[0]?.address}</td>
                     <td>{item.enquirydata[0]?.city}</td>
 

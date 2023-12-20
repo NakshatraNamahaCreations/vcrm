@@ -121,8 +121,8 @@ function Surveydatatable() {
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.contact1 &&
-            item.contact1.toLowerCase().includes(searchContact.toLowerCase())
+            item.mobile &&
+            item.mobile.toLowerCase().includes(searchContact.toLowerCase())
         );
       }
       if (searchAddress) {
@@ -428,7 +428,7 @@ function Surveydatatable() {
                       state={{ data: item }}
                       className="tbl"
                     >
-                      {item.contact1}{" "}
+                      {item.mobile}{" "}
                     </Link>
                   </td>
                   <td>

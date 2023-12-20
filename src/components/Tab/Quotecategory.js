@@ -128,14 +128,14 @@ function Quotecategory() {
                 <tr className="user-tbale-body">
                   <td>{i++}</td>
                   <td>{item.enquirydata[0]?.category}</td>
-                  <td>{item.enquirydata[0]?.enquirydate}</td>
+                  <td>{item.enquirydata[0]?.date}</td>
                   <td></td>
                   <td>
                     {item.date} <br />
                     {item.time}
                   </td>
                   <td>{item.enquirydata[0]?.name}</td>
-                  <td>{item.enquirydata[0]?.contact1}</td>
+                  <td>{item.enquirydata[0]?.mobile}</td>
                   <td>{item.enquirydata[0]?.address}</td>
 
                   <td>{item.enquirydata[0]?.city}</td>
@@ -145,13 +145,12 @@ function Quotecategory() {
                   <td>{item.enquirydata[0]?.technicianname}</td>
 
                   <td>
-                    {item.enquirydata.map((a)=>(
-                      a.enquirydetails[0]?.nxtfoll
-                    ))}
+                    {item.enquirydata.map((a) => a.enquirydetails[0]?.nxtfoll)}
                   </td>
-                  <td> {item.enquirydata.map((a)=>(
-                      a.enquirydetails[0]?.nxtfoll
-                    ))}</td>
+                  <td>
+                    {" "}
+                    {item.enquirydata.map((a) => a.enquirydetails[0]?.nxtfoll)}
+                  </td>
                   <td>{item.enquirydata[0]?.comment}</td>
                   <td></td>
                 </tr>

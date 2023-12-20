@@ -16,7 +16,6 @@
 //   const location = useLocation();
 //   const EnquiryId = new URLSearchParams(location.search)?.get("id");
 
-
 //   const apiURL = process.env.REACT_APP_API_URL;
 //   const imgURL = process.env.REACT_APP_IMAGE_API_URL;
 
@@ -26,11 +25,10 @@
 
 //   const [data, setdata] = useState([]);
 
-
 //   useEffect(() => {
 //     getQuotePage();
 //   }, [EnquiryId]);
-  
+
 //   const getQuotePage = async () => {
 //     try {
 //       let res = await axios.get(apiURL + `/getenquiryquote`);
@@ -43,7 +41,6 @@
 //       // Handle errors here, such as setting data to a default value or displaying an error message
 //     }
 //   };
-  
 
 //   useEffect(() => {
 //     gettermsgroup();
@@ -65,7 +62,7 @@
 
 //   useEffect(() => {
 //     if (
-   
+
 //       data[0].treatmentdetails &&
 //       Array.isArray(data[0].treatmentdetails)
 //     ) {
@@ -129,7 +126,6 @@
 
 //     return benfite;
 //   }
-
 
 //   function calculateTotalPrice(data) {
 //     let totalPrice = 0;
@@ -506,7 +502,6 @@
 
 // export default Quotationterm;
 
-
 import React, { useState, useEffect } from "react";
 import Header from "../layout/Header";
 import axios from "axios";
@@ -640,7 +635,7 @@ function Quotationterm() {
   if (typeof netTotal === "number" && isFinite(netTotal)) {
     netTotalInWords = toWords(netTotal).replace(/,/g, ""); // Remove commas
   }
-  
+
   return (
     <div className="row">
       {/* <Header /> */}
@@ -670,7 +665,7 @@ function Quotationterm() {
                 </div>
                 <p>
                   {data[0]?.address} <br />
-                  {data[0]?.contact1}
+                  {data[0]?.mobile}
                   <br />
                   {data[0]?.email}
                 </p>
@@ -701,14 +696,14 @@ function Quotationterm() {
                 <div className="" style={{ fontWeight: "bold" }}>
                   Sales Manager :
                   <span style={{ color: "black", fontWeight: 400 }}>
-                  {data[0]?.quotedata[0]?.salesExecutive}
+                    {data[0]?.quotedata[0]?.salesExecutive}
                   </span>
                 </div>
 
                 <div className="" style={{ fontWeight: "bold" }}>
                   Contact :{" "}
                   <span style={{ color: "black", fontWeight: 400 }}>
-                    {data[0]?.contact1}
+                    {data[0]?.mobile}
                   </span>
                 </div>
               </div>
@@ -782,55 +777,48 @@ function Quotationterm() {
                   className="row  "
                   style={{ justifyContent: "flex-end", marginTop: "10px" }}
                 >
-                  <div style={{display:"flex",justifyContent:"end"}}>
-
-             
-                  <div className="col-0.5">
-                    <h5 style={{ textAlign: "right" }}> Gst(5%) </h5>
-                  </div>
-                  <div className="col-0.5">
-                    <h5 style={{ textAlign: "right" }}> : </h5>
-                  </div>
-                  <div className="col-1"style={{ textAlign: "right" }} >
-                  {data[0]?.quotedata[0]?.GST == true?
-                    <h5>{total * 0.05}</h5>:<>0</>}
-                  </div>
+                  <div style={{ display: "flex", justifyContent: "end" }}>
+                    <div className="col-0.5">
+                      <h5 style={{ textAlign: "right" }}> Gst(5%) </h5>
+                    </div>
+                    <div className="col-0.5">
+                      <h5 style={{ textAlign: "right" }}> : </h5>
+                    </div>
+                    <div className="col-1" style={{ textAlign: "right" }}>
+                      {data[0]?.quotedata[0]?.GST == true ? (
+                        <h5>{total * 0.05}</h5>
+                      ) : (
+                        <>0</>
+                      )}
+                    </div>
                   </div>
                 </div>
-                <div
-                  className="row "
-                  style={{ justifyContent: "flex-end" }}
-                >
+                <div className="row " style={{ justifyContent: "flex-end" }}>
                   <div className="col-2">
                     <h5 style={{ textAlign: "right" }}> Adjustment :</h5>
                   </div>
                   <div className="col-1" style={{ textAlign: "right" }}>
-                  {data[0]?.quotedata[0]?.adjustments?
-                  
-                
-                    <h5>{data[0]?.quotedata[0]?.adjustments}</h5>:<>0</>}
+                    {data[0]?.quotedata[0]?.adjustments ? (
+                      <h5>{data[0]?.quotedata[0]?.adjustments}</h5>
+                    ) : (
+                      <>0</>
+                    )}
                   </div>
                 </div>
 
-                <div
-                  className="row "
-                  style={{ justifyContent: "flex-end" }}
-                >
-                   <div style={{display:"flex",justifyContent:"end"}}>
-
-
-              
-                  <div className="col-2">
-                    <h5 style={{ textAlign: "right", fontWeight: "bold" }}>
-                      {" "}
-                      Total :
-                    </h5>
-                  </div>
-                  <div className="col-1" style={{ textAlign: "right" }}>
-                    <h5>
-                      <b>{data[0]?.quotedata[0]?.netTotal}</b>
-                    </h5>
-                  </div>
+                <div className="row " style={{ justifyContent: "flex-end" }}>
+                  <div style={{ display: "flex", justifyContent: "end" }}>
+                    <div className="col-2">
+                      <h5 style={{ textAlign: "right", fontWeight: "bold" }}>
+                        {" "}
+                        Total :
+                      </h5>
+                    </div>
+                    <div className="col-1" style={{ textAlign: "right" }}>
+                      <h5>
+                        <b>{data[0]?.quotedata[0]?.netTotal}</b>
+                      </h5>
+                    </div>
                   </div>
                 </div>
 
@@ -974,29 +962,23 @@ function Quotationterm() {
                   </div>
                 </div>
               ))}
-
-             
             </div>
           </div>
         </div>
         <div>
-              {footerimgdata.map((item) => (
-                <div className="col-md-12">
-                  <img
-                    src={imgURL + "/quotationfooterimg/" + item.footerimg}
-                    height="auto"
-                    width="100%"
-                  />
-                </div>
-              ))}
+          {footerimgdata.map((item) => (
+            <div className="col-md-12">
+              <img
+                src={imgURL + "/quotationfooterimg/" + item.footerimg}
+                height="auto"
+                width="100%"
+              />
             </div>
+          ))}
+        </div>
       </div>
-
-      
     </div>
   );
 }
 
 export default Quotationterm;
-
-

@@ -94,8 +94,8 @@ function Quoteyesterday() {
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
               .toLowerCase()
               .includes(searchContact.toLowerCase())
         );
@@ -475,7 +475,7 @@ function Quoteyesterday() {
                       {item?.quotedata[0]?.time}
                     </td>
                     <td>{item?.enquirydata[0]?.name}</td>
-                    <td>{item?.enquirydata[0]?.contact1}</td>
+                    <td>{item?.enquirydata[0]?.mobile}</td>
                     <td>{item?.enquirydata[0]?.address}</td>
 
                     <td>{item?.enquirydata[0]?.city}</td>

@@ -187,7 +187,7 @@ function Report_Survey() {
     {
       name: "Contact",
       selector: (row) =>
-        row.enquirydata[0]?.contact1 ? row.enquirydata[0]?.contact1 : "-",
+        row.enquirydata[0]?.mobile ? row.enquirydata[0]?.mobile : "-",
     },
     {
       name: "Address",
@@ -374,7 +374,7 @@ function Report_Survey() {
                     <div className="col-md-5 ms-4">
                       <select
                         className="report-select"
-                        onChange={handleCategoryChange} 
+                        onChange={handleCategoryChange}
                       >
                         <option>All</option>
                         {[...duplicateCategory].map((category) => (
@@ -420,7 +420,6 @@ function Report_Survey() {
                     </div>
                   </div>
                   <br />
-                 
                 </div>
                 <p style={{ justifyContent: "center", display: "flex" }}>
                   <button

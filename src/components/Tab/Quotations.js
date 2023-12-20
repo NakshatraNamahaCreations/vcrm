@@ -680,7 +680,7 @@ function Quotationterm() {
                 </div>
                 <p>
                   {data[0]?.address} <br />
-                  {data[0]?.contact1}
+                  {data[0]?.mobile}
                   <br />
                   {data[0]?.email}
                 </p>

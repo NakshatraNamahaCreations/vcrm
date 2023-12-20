@@ -192,7 +192,7 @@ function Report_Quotation() {
     {
       name: "Contact No",
       selector: (row) =>
-        row.enquirydata[0]?.contact1 ? row.enquirydata[0]?.contact1 : "-",
+        row.enquirydata[0]?.mobile ? row.enquirydata[0]?.mobile : "-",
     },
     {
       name: "Address",

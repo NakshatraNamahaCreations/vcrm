@@ -46,13 +46,13 @@ function Painting() {
   const getPaymentById = async () => {
     try {
       const customerId = data[0]?.customer[0]?._id;
-     
+
       let res = await axios.get(
         apiURL + `/getPaymentByCustomerId/${customerId}`
       );
       if (res.status === 200) {
         console.log("PaymentDetails", res);
-        setPaymentDetails(res.data?.payments.filter((i)=>i.serviceId === id));
+        setPaymentDetails(res.data?.payments.filter((i) => i.serviceId === id));
       }
     } catch (error) {
       console.log("error:", error);
@@ -65,8 +65,7 @@ function Painting() {
 
       let res = await axios.get(apiURL + `/getWorkByCustomerId/${customerId}`);
       if (res.status === 200) {
-  
-        setWorkDetails(res.data?.works.filter((i)=>i.serviceId ===id));
+        setWorkDetails(res.data?.works.filter((i) => i.serviceId === id));
       }
     } catch (error) {
       console.log("error:", error);
@@ -88,7 +87,7 @@ function Painting() {
     );
 
     setCustomerPayments(customerPayments);
-    setVendorPayments(vendorPayments.filter((i)=>i.serviceId ===id));
+    setVendorPayments(vendorPayments.filter((i) => i.serviceId === id));
   }, [paymentDetails]);
 
   var i = 1;
@@ -119,7 +118,7 @@ function Painting() {
       return "0.0";
     }
   }
-  
+
   const getGST = GST();
   let totalRate = 0;
   return (
@@ -290,10 +289,10 @@ function Painting() {
                     <tr key={index + "-" + itemIndex}>
                       <td>{index + 1} </td>
                       <td> {item.category} </td>
-                      <td> {item.enquirydate} </td>
+                      <td> {item.date} </td>
                       <td> {item.executive} </td>
                       <td> {item.name} </td>
-                      <td> {item.contact1} </td>
+                      <td> {item.mobile} </td>
                       <td>{item.contact2} </td>
                       <td> {item.email} </td>
                       <td> {item.address}</td>

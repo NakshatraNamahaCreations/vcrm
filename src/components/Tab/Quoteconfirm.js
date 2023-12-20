@@ -24,16 +24,12 @@ function Quoteconfirmed() {
   const [searchResponse, setSearchResponse] = useState("");
   const [searchDesc, setSearchDesc] = useState("");
   const [searchNxtfoll, setSearchNxtfoll] = useState("");
-  const [searchBookedby,setsearchBookedby] = useState("");
-
-
+  const [searchBookedby, setsearchBookedby] = useState("");
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
-
- 
   useEffect(() => {
     getenquiryadd();
   }, []);
@@ -41,8 +37,12 @@ function Quoteconfirmed() {
   const getenquiryadd = async () => {
     let res = await axios.get(apiURL + "/getenquirydata");
     if (res.status === 200) {
-      setenquiryflwdata(res.data?.quotefollowup.filter((item) => item.response === "Confirmed"));
-      setSearchResults(res.data?.quotefollowup.filter((item) => item.response === "Confirmed")); // Update the searchResults state with the full data
+      setenquiryflwdata(
+        res.data?.quotefollowup.filter((item) => item.response === "Confirmed")
+      );
+      setSearchResults(
+        res.data?.quotefollowup.filter((item) => item.response === "Confirmed")
+      ); // Update the searchResults state with the full data
     }
   };
   let i = 0;
@@ -79,8 +79,8 @@ function Quoteconfirmed() {
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
               .toLowerCase()
               .includes(searchContact.toLowerCase())
         );
@@ -100,8 +100,8 @@ function Quoteconfirmed() {
           (item) =>
             item.enquirydata[0]?.intrestedfor &&
             item.enquirydata[0]?.intrestedfor
-            .toLowerCase()
-            .includes(searchServices.toLowerCase())
+              .toLowerCase()
+              .includes(searchServices.toLowerCase())
         );
       } //
       if (searchCity) {
@@ -116,8 +116,10 @@ function Quoteconfirmed() {
       if (searchTotal) {
         results = results.filter(
           (item) =>
-          item?.quotedata[0]?.netTotal &&
-            item.quotedata[0]?.netTotal.toLowerCase().includes(searchTotal.toLowerCase())
+            item?.quotedata[0]?.netTotal &&
+            item.quotedata[0]?.netTotal
+              .toLowerCase()
+              .includes(searchTotal.toLowerCase())
         );
       }
       if (searchExecutive) {
@@ -133,9 +135,9 @@ function Quoteconfirmed() {
         results = results.filter(
           (item) =>
             item.quotedata[0]?.Bookedby &&
-            item.quotedata[0]?.Bookedby
-              .toLowerCase()
-              .includes(searchBookedby.toLowerCase())
+            item.quotedata[0]?.Bookedby.toLowerCase().includes(
+              searchBookedby.toLowerCase()
+            )
         );
       }
       if (searchStaff) {
@@ -187,60 +189,57 @@ function Quoteconfirmed() {
     searchResponse,
     searchDesc,
     searchNxtfoll,
-    searchBookedby
+    searchBookedby,
   ]);
 
   const click = (data) => {
     navigate(`/quotedetails/${data.EnquiryId}`);
   };
 
-   // Pagination logic
-   const totalPages = Math.ceil(searchResults.length / itemsPerPage);
-   const pageOptions = Array.from(
-     { length: totalPages },
-     (_, index) => index + 1
-   );
- 
-   // Get current items for the current page
-   const indexOfLastItem = currentPage * itemsPerPage;
-   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-   const currentItems = searchResults.slice(indexOfFirstItem, indexOfLastItem);
- 
+  // Pagination logic
+  const totalPages = Math.ceil(searchResults.length / itemsPerPage);
+  const pageOptions = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
 
-   // Change page
+  // Get current items for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = searchResults.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage);
   };
 
-
   return (
     <div className="web">
-    <Header />
-    <Quotefollowupnav />
+      <Header />
+      <Quotefollowupnav />
 
-    <div className="row m-auto">
-      <div className="col-md-12">
+      <div className="row m-auto">
+        <div className="col-md-12">
+          {/* Pagination */}
+          <div className="pagination">
+            <span>Page </span>
+            <select
+              className="m-1"
+              value={currentPage}
+              onChange={(e) => handlePageChange(Number(e.target.value))}
+            >
+              {pageOptions.map((page) => (
+                <option value={page} key={page}>
+                  {page}
+                </option>
+              ))}
+            </select>
+            <span> of {totalPages}</span>
+          </div>
 
-         {/* Pagination */}
-         <div className="pagination">
-          <span>Page </span>
-          <select
-          className="m-1"
-            value={currentPage}
-            onChange={(e) => handlePageChange(Number(e.target.value))}
-          >
-            {pageOptions.map((page) => (
-              <option value={page} key={page}>
-                {page}
-              </option>
-            ))}
-          </select>
-          <span> of {totalPages}</span>
-        </div>
-
-        <table >
-          <thead>
-          <tr className="bg ">
+          <table>
+            <thead>
+              <tr className="bg ">
                 <th scope="col" className="bor">
                   <input className="vhs-table-input" />{" "}
                 </th>
@@ -351,7 +350,7 @@ function Quoteconfirmed() {
                     value={searchBookedby}
                     onChange={(e) => setsearchBookedby(e.target.value)}
                   />{" "}
-                </th> 
+                </th>
                 <th scope="col" className="bor">
                   <input
                     className="vhs-table-input"
@@ -382,62 +381,60 @@ function Quoteconfirmed() {
                     onChange={(e) => setSearchNxtfoll(e.target.value)}
                   />{" "}
                 </th>
-               
-               
               </tr>
-            <tr className="bg">
-              <th className="bor">#</th>
-              <th className="bor">Category</th>
-              <th className="bor">QId</th>
-              <th className="bor">Q Dt-Tm</th>
-              <th className="bor">Name</th>
-              <th className="bor">Contact</th>
-              <th className="bor">Address</th>
-              <th className="bor">City</th>
-              <th className="bor">Service</th>
-              <th className="bor">QAmt</th>
-              <th className="bor">Executive</th>
-              <th className="bor">Booked by</th>
-              <th className="bor">Last F/W Dt</th>
-              <th className="bor">Next F/W Dt</th>
-              <th className="bor">Desc</th>
-              <th className="bor">Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((item) => (
-              <a onClick={() => click(item)} className="tbl">
-                <tr className="trnew">
-                  <td>{i++}</td>
-                  <td>{item?.enquirydata[0]?.category}</td>
-                  <td>{item?.quotedata[0]?.quoteId}</td>
-                  <td>
-                    {item?.quotedata[0]?.date}
-                    <br />
-                    {item?.quotedata[0]?.time}
-                  </td>
-                  <td>{item?.enquirydata[0]?.name}</td>
-                  <td>{item?.enquirydata[0]?.contact1}</td>
-                  <td>{item?.enquirydata[0]?.address}</td>
+              <tr className="bg">
+                <th className="bor">#</th>
+                <th className="bor">Category</th>
+                <th className="bor">QId</th>
+                <th className="bor">Q Dt-Tm</th>
+                <th className="bor">Name</th>
+                <th className="bor">Contact</th>
+                <th className="bor">Address</th>
+                <th className="bor">City</th>
+                <th className="bor">Service</th>
+                <th className="bor">QAmt</th>
+                <th className="bor">Executive</th>
+                <th className="bor">Booked by</th>
+                <th className="bor">Last F/W Dt</th>
+                <th className="bor">Next F/W Dt</th>
+                <th className="bor">Desc</th>
+                <th className="bor">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((item) => (
+                <a onClick={() => click(item)} className="tbl">
+                  <tr className="trnew">
+                    <td>{i++}</td>
+                    <td>{item?.enquirydata[0]?.category}</td>
+                    <td>{item?.quotedata[0]?.quoteId}</td>
+                    <td>
+                      {item?.quotedata[0]?.date}
+                      <br />
+                      {item?.quotedata[0]?.Time}
+                    </td>
+                    <td>{item?.enquirydata[0]?.name}</td>
+                    <td>{item?.enquirydata[0]?.mobile}</td>
+                    <td>{item?.enquirydata[0]?.address}</td>
 
-                  <td>{item?.enquirydata[0]?.city}</td>
-                  <td>{item?.enquirydata[0]?.intrestedfor}</td>
-                  <td>{item?.quotedata[0]?.netTotal}</td>
-                  <td>{item?.enquirydata[0]?.executive}</td>
-                  <td>{item?.quotedata[0]?.Bookedby}</td>
-                  <td>{item?.enquiryfollowupdata[0]?.folldate}</td>
-                  <td>{item?.nxtfoll}</td>
-                  <td>{item?.desc}</td>
-                  <td></td>
-                </tr>
-              </a>
-              // </Link>
-            ))}
-          </tbody>
-        </table>
+                    <td>{item?.enquirydata[0]?.city}</td>
+                    <td>{item?.enquirydata[0]?.intrestedfor}</td>
+                    <td>{item?.quotedata[0]?.netTotal}</td>
+                    <td>{item?.enquirydata[0]?.executive}</td>
+                    <td>{item?.quotedata[0]?.Bookedby}</td>
+                    <td>{item?.enquiryfollowupdata[0]?.folldate}</td>
+                    <td>{item?.nxtfoll}</td>
+                    <td>{item?.desc}</td>
+                    <td></td>
+                  </tr>
+                </a>
+                // </Link>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
   );
 }
 

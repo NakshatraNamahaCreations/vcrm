@@ -6,7 +6,7 @@ import Table from "react-bootstrap/Table";
 import { Link, useNavigate } from "react-router-dom";
 
 function Econfirmed() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [filterdata, setfilterdata] = useState([]);
   const apiURL = process.env.REACT_APP_API_URL;
   const [searchResults, setSearchResults] = useState([]);
@@ -24,7 +24,7 @@ function Econfirmed() {
   const [searchStaff, setSearchStaff] = useState("");
   const [searchResponse, setSearchResponse] = useState("");
   const [searchDesc, setSearchDesc] = useState("");
-  const [searchNxtfoll, setSearchNxtfoll] = useState("")
+  const [searchNxtfoll, setSearchNxtfoll] = useState("");
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,16 +39,17 @@ function Econfirmed() {
     let res = await axios.get(apiURL + "/getallflwdata");
     if ((res.status = 200)) {
       setfilterdata(
-        res.data?.enquiryfollowup.filter((i)=>i.response === "Confirmed"));
-        setSearchResults(
-          res.data?.enquiryfollowup.filter((i)=>i.response === "Confirmed"));
+        res.data?.enquiryfollowup.filter((i) => i.response === "Confirmed")
+      );
+      setSearchResults(
+        res.data?.enquiryfollowup.filter((i) => i.response === "Confirmed")
+      );
     }
   };
   const enquirydetail = (data) => {
     console.log(data.EnquiryId);
     navigate(`/enquirydetail/${data.EnquiryId}`);
   };
-
 
   useEffect(() => {
     const filterResults = () => {
@@ -63,32 +64,36 @@ function Econfirmed() {
       if (searchDateTime) {
         results = results.filter(
           (item) =>
-            (item.enquirydata[0]?.enquirydate &&
-              item.enquirydate
-                .toLowerCase()
-                .includes(searchDateTime.toLowerCase())) 
+            item.enquirydata[0]?.date &&
+            item.date.toLowerCase().includes(searchDateTime.toLowerCase())
         );
       }
-     
+
       if (searchName) {
         results = results.filter(
           (item) =>
             item.enquirydata[0]?.name &&
-            item.enquirydata[0]?.name.toLowerCase().includes(searchName.toLowerCase())
+            item.enquirydata[0]?.name
+              .toLowerCase()
+              .includes(searchName.toLowerCase())
         );
       }
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1.toLowerCase().includes(searchContact.toLowerCase())
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
+              .toLowerCase()
+              .includes(searchContact.toLowerCase())
         );
       }
       if (searchAddress) {
         results = results.filter(
           (item) =>
             item.enquirydata[0]?.address &&
-            item.enquirydata[0]?.address.toLowerCase().includes(searchAddress.toLowerCase())
+            item.enquirydata[0]?.address
+              .toLowerCase()
+              .includes(searchAddress.toLowerCase())
         );
       }
       if (searchReference) {
@@ -113,7 +118,9 @@ function Econfirmed() {
         results = results.filter(
           (item) =>
             item.enquirydata[0]?.city &&
-            item.enquirydata[0]?.city.toLowerCase().includes(searchCity.toLowerCase())
+            item.enquirydata[0]?.city
+              .toLowerCase()
+              .includes(searchCity.toLowerCase())
         );
       }
       if (searchInterest) {
@@ -136,9 +143,7 @@ function Econfirmed() {
         results = results.filter(
           (item) =>
             item.staffname &&
-            item.staffname
-              .toLowerCase()
-              .includes(searchStaff.toLowerCase())
+            item.staffname.toLowerCase().includes(searchStaff.toLowerCase())
         );
       }
       if (searchResponse) {
@@ -152,18 +157,14 @@ function Econfirmed() {
         results = results.filter(
           (item) =>
             item.desc &&
-            item.desc
-              .toLowerCase()
-              .includes(searchDesc.toLowerCase())
+            item.desc.toLowerCase().includes(searchDesc.toLowerCase())
         );
       }
       if (searchNxtfoll) {
         results = results.filter(
           (item) =>
-            (item.nxtfoll &&
-              item.nxtfoll
-                .toLowerCase()
-                .includes(searchNxtfoll.toLowerCase())) 
+            item.nxtfoll &&
+            item.nxtfoll.toLowerCase().includes(searchNxtfoll.toLowerCase())
         );
       }
       // results = results.map((item) => ({
@@ -186,7 +187,7 @@ function Econfirmed() {
     searchStaff,
     searchResponse,
     searchDesc,
-    searchNxtfoll
+    searchNxtfoll,
   ]);
 
   function getColor(colorcode) {
@@ -201,23 +202,23 @@ function Econfirmed() {
     }
   }
 
-   // Pagination logic
-   const totalPages = Math.ceil(searchResults.length / itemsPerPage);
-   const pageOptions = Array.from(
-     { length: totalPages },
-     (_, index) => index + 1
-   );
- 
-   // Get current items for the current page
-   const indexOfLastItem = currentPage * itemsPerPage;
-   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-   const currentItems = searchResults.slice(indexOfFirstItem, indexOfLastItem);
- 
-   // Change page
-   const handlePageChange = (selectedPage) => {
-     setCurrentPage(selectedPage);
-   };
- 
+  // Pagination logic
+  const totalPages = Math.ceil(searchResults.length / itemsPerPage);
+  const pageOptions = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
+
+  // Get current items for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = searchResults.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage);
+  };
+
   return (
     <div>
       <Header />
@@ -225,12 +226,11 @@ function Econfirmed() {
 
       <div className="row m-auto">
         <div className="col-md-12">
-
-           {/* Pagination */}
-           <div className="pagination">
+          {/* Pagination */}
+          <div className="pagination">
             <span>Page </span>
             <select
-            className="m-1"
+              className="m-1"
               value={currentPage}
               onChange={(e) => handlePageChange(Number(e.target.value))}
             >
@@ -243,7 +243,7 @@ function Econfirmed() {
             <span> of {totalPages}</span>
           </div>
 
-        <table>
+          <table>
             <thead>
               <tr className="tr ">
                 <th scope="col">
@@ -414,7 +414,7 @@ function Econfirmed() {
                     <td>{item.enquirydata[0]?.enquirydate}</td>
 
                     <td>{item.enquirydata[0]?.name}</td>
-                    <td>{item.enquirydata[0]?.contact1}</td>
+                    <td>{item.enquirydata[0]?.mobile}</td>
                     <td>{item.enquirydata[0]?.address}</td>
                     <td>{item.enquirydata[0]?.city}</td>
 

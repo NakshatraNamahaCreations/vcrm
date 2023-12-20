@@ -6,7 +6,7 @@ import Table from "react-bootstrap/Table";
 import { Link, useNavigate } from "react-router-dom";
 
 function Etommorow() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [filterdata, setfilterdata] = useState([]);
   const apiURL = process.env.REACT_APP_API_URL;
   const [searchResults, setSearchResults] = useState([]);
@@ -24,46 +24,47 @@ function Etommorow() {
   const [searchStaff, setSearchStaff] = useState("");
   const [searchResponse, setSearchResponse] = useState("");
   const [searchDesc, setSearchDesc] = useState("");
-  const [searchNxtfoll, setSearchNxtfoll] = useState("")
+  const [searchNxtfoll, setSearchNxtfoll] = useState("");
 
-
-    // Pagination state
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10);
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
   useEffect(() => {
     getenquiry();
   }, []);
 
   let i = 0;
-  
+
   const enquirydetail = (data) => {
     console.log(data.EnquiryId);
     navigate(`/enquirydetail/${data.EnquiryId}`);
   };
 
-
   const getTomorrowDate = () => {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split('T')[0];
+    return tomorrow.toISOString().split("T")[0];
   };
 
   // Get tomorrow's date
   const tomorrowDate = getTomorrowDate();
 
- 
-
   const getenquiry = async () => {
     let res = await axios.get(apiURL + "/getcalllateraggredata");
     if ((res.status = 200)) {
       setfilterdata(
-        res.data?.enquiryfollowup.filter(item => item.nxtfoll === tomorrowDate));
-    
-        setSearchResults(
-          res.data?.enquiryfollowup.filter((item) => item.nxtfoll === tomorrowDate)
-        );
-      }
+        res.data?.enquiryfollowup.filter(
+          (item) => item.nxtfoll === tomorrowDate
+        )
+      );
+
+      setSearchResults(
+        res.data?.enquiryfollowup.filter(
+          (item) => item.nxtfoll === tomorrowDate
+        )
+      );
+    }
   };
   useEffect(() => {
     const filterResults = () => {
@@ -78,32 +79,36 @@ function Etommorow() {
       if (searchDateTime) {
         results = results.filter(
           (item) =>
-            (item.enquirydata[0]?.enquirydate &&
-              item.enquirydate
-                .toLowerCase()
-                .includes(searchDateTime.toLowerCase())) 
+            item.enquirydata[0]?.date &&
+            item.date.toLowerCase().includes(searchDateTime.toLowerCase())
         );
       }
-     
+
       if (searchName) {
         results = results.filter(
           (item) =>
             item.enquirydata[0]?.name &&
-            item.enquirydata[0]?.name.toLowerCase().includes(searchName.toLowerCase())
+            item.enquirydata[0]?.name
+              .toLowerCase()
+              .includes(searchName.toLowerCase())
         );
       }
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1.toLowerCase().includes(searchContact.toLowerCase())
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
+              .toLowerCase()
+              .includes(searchContact.toLowerCase())
         );
       }
       if (searchAddress) {
         results = results.filter(
           (item) =>
             item.enquirydata[0]?.address &&
-            item.enquirydata[0]?.address.toLowerCase().includes(searchAddress.toLowerCase())
+            item.enquirydata[0]?.address
+              .toLowerCase()
+              .includes(searchAddress.toLowerCase())
         );
       }
       if (searchReference) {
@@ -128,7 +133,9 @@ function Etommorow() {
         results = results.filter(
           (item) =>
             item.enquirydata[0]?.city &&
-            item.enquirydata[0]?.city.toLowerCase().includes(searchCity.toLowerCase())
+            item.enquirydata[0]?.city
+              .toLowerCase()
+              .includes(searchCity.toLowerCase())
         );
       }
       if (searchInterest) {
@@ -151,9 +158,7 @@ function Etommorow() {
         results = results.filter(
           (item) =>
             item.staffname &&
-            item.staffname
-              .toLowerCase()
-              .includes(searchStaff.toLowerCase())
+            item.staffname.toLowerCase().includes(searchStaff.toLowerCase())
         );
       }
       if (searchResponse) {
@@ -167,18 +172,14 @@ function Etommorow() {
         results = results.filter(
           (item) =>
             item.desc &&
-            item.desc
-              .toLowerCase()
-              .includes(searchDesc.toLowerCase())
+            item.desc.toLowerCase().includes(searchDesc.toLowerCase())
         );
       }
       if (searchNxtfoll) {
         results = results.filter(
           (item) =>
-            (item.nxtfoll &&
-              item.nxtfoll
-                .toLowerCase()
-                .includes(searchNxtfoll.toLowerCase())) 
+            item.nxtfoll &&
+            item.nxtfoll.toLowerCase().includes(searchNxtfoll.toLowerCase())
         );
       }
       // results = results.map((item) => ({
@@ -201,7 +202,7 @@ function Etommorow() {
     searchStaff,
     searchResponse,
     searchDesc,
-    searchNxtfoll
+    searchNxtfoll,
   ]);
 
   function getColor(colorcode) {
@@ -240,12 +241,11 @@ function Etommorow() {
 
       <div className="row m-auto">
         <div className="col-md-12">
-
-           {/* Pagination */}
+          {/* Pagination */}
           <div className="pagination">
             <span>Page </span>
             <select
-            className="m-1"
+              className="m-1"
               value={currentPage}
               onChange={(e) => handlePageChange(Number(e.target.value))}
             >
@@ -257,7 +257,7 @@ function Etommorow() {
             </select>
             <span> of {totalPages}</span>
           </div>
-        <table>
+          <table>
             <thead>
               <tr className="tr ">
                 <th scope="col">
@@ -425,10 +425,10 @@ function Etommorow() {
                   >
                     <td>{i++}</td>
                     <td>{item.category}</td>
-                    <td>{item.enquirydata[0]?.enquirydate}</td>
+                    <td>{item.enquirydata[0]?.date}</td>
 
                     <td>{item.enquirydata[0]?.name}</td>
-                    <td>{item.enquirydata[0]?.contact1}</td>
+                    <td>{item.enquirydata[0]?.mobile}</td>
                     <td>{item.enquirydata[0]?.address}</td>
                     <td>{item.enquirydata[0]?.city}</td>
 
@@ -451,4 +451,3 @@ function Etommorow() {
 }
 
 export default Etommorow;
-

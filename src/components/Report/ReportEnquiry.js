@@ -83,17 +83,13 @@ function Report_Enquiry() {
   }, []);
 
   const handleSearch = () => {
-  
     setFilteredData(enquiryData);
     setSearchValue("");
     setShowMessage(true);
-  
 
     const filteredResults = enquiryData.filter((item) => {
-     
-
       const enquiryDate = parse(
-        item.enquirydata[0]?.enquirydate,
+        item.enquirydata[0]?.date,
         "MM-dd-yyyy",
         new Date()
       );
@@ -234,7 +230,7 @@ function Report_Enquiry() {
     {
       name: "Contact",
       selector: (row) =>
-        row.enquirydata[0]?.contact1 ? row.enquirydata[0]?.contact1 : "-",
+        row.enquirydata[0]?.mobile ? row.enquirydata[0]?.mobile : "-",
     },
     {
       name: "Address",

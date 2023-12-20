@@ -6,7 +6,7 @@ import Table from "react-bootstrap/Table";
 import { Link, useNavigate } from "react-router-dom";
 
 function Ethisweek() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [filterdata, setfilterdata] = useState([]);
   const apiURL = process.env.REACT_APP_API_URL;
   const [searchResults, setSearchResults] = useState([]);
@@ -24,197 +24,202 @@ function Ethisweek() {
   const [searchStaff, setSearchStaff] = useState("");
   const [searchResponse, setSearchResponse] = useState("");
   const [searchDesc, setSearchDesc] = useState("");
-  const [searchNxtfoll, setSearchNxtfoll] = useState("")
+  const [searchNxtfoll, setSearchNxtfoll] = useState("");
 
-
-    // Pagination state
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10);
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   useEffect(() => {
     getenquiry();
   }, []);
 
- 
-
-// Function to calculate the start and end dates of the previous week
-const getLastWeekDates = () => {
-  const today = new Date();
-  const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() - 6));
-  const lastDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-  const startDate = firstDayOfWeek.toISOString().split('T')[0];
-  const endDate = lastDayOfWeek.toISOString().split('T')[0];
-  return { startDate, endDate };
-};
-
-// Get the start and end dates of the previous week
-const { startDate, endDate } = getLastWeekDates();
-
-let i = 0;
-const getenquiry = async () => {
-  let res = await axios.get(apiURL + "/getcalllateraggredata");
-  if ((res.status = 200)) {
-    setfilterdata(
-      res.data?.enquiryfollowup.filter(item => item.nxtfoll >= startDate && item.nxtfoll <= endDate));
-      setSearchResults(
-        res.data?.enquiryfollowup.filter((item) => item.nxtfoll >= startDate && item.nxtfoll <= endDate)
-      );
-  }
-};
-const enquirydetail = (data) => {
-
-  navigate(`/enquirydetail/${data.EnquiryId}`);
-};
-useEffect(() => {
-  const filterResults = () => {
-    let results = filterdata;
-    if (searchCatagory) {
-      results = results.filter(
-        (item) =>
-          item.category &&
-          item.category.toLowerCase().includes(searchCatagory.toLowerCase())
-      );
-    }
-    if (searchDateTime) {
-      results = results.filter(
-        (item) =>
-          (item.enquirydata[0]?.enquirydate &&
-            item.enquirydate
-              .toLowerCase()
-              .includes(searchDateTime.toLowerCase())) 
-      );
-    }
-   
-    if (searchName) {
-      results = results.filter(
-        (item) =>
-          item.enquirydata[0]?.name &&
-          item.enquirydata[0]?.name.toLowerCase().includes(searchName.toLowerCase())
-      );
-    }
-    if (searchContact) {
-      results = results.filter(
-        (item) =>
-          item.enquirydata[0]?.contact1 &&
-          item.enquirydata[0]?.contact1.toLowerCase().includes(searchContact.toLowerCase())
-      );
-    }
-    if (searchAddress) {
-      results = results.filter(
-        (item) =>
-          item.enquirydata[0]?.address &&
-          item.enquirydata[0]?.address.toLowerCase().includes(searchAddress.toLowerCase())
-      );
-    }
-    if (searchReference) {
-      results = results.filter(
-        (item) =>
-          item.enquirydata[0]?.reference1 &&
-          item.enquirydata[0]?.reference1
-            .toLowerCase()
-            .includes(searchReference.toLowerCase())
-      );
-    } //
-    if (searchReference2) {
-      results = results.filter(
-        (item) =>
-          item.enquirydata[0]?.reference2 &&
-          item.enquirydata[0]?.reference2
-            .toLowerCase()
-            .includes(searchReference2.toLowerCase())
-      );
-    } //
-    if (searchCity) {
-      results = results.filter(
-        (item) =>
-          item.enquirydata[0]?.city &&
-          item.enquirydata[0]?.city.toLowerCase().includes(searchCity.toLowerCase())
-      );
-    }
-    if (searchInterest) {
-      results = results.filter(
-        (item) =>
-          item.enquirydata[0]?.intrestedfor &&
-          item.enquirydata[0]?.intrestedfor
-            .toLowerCase()
-            .includes(searchInterest.toLowerCase())
-      );
-    }
-    if (searchFolldate) {
-      results = results.filter(
-        (item) =>
-          item.folldate &&
-          item.folldate.toLowerCase().includes(searchFolldate.toLowerCase())
-      );
-    }
-    if (searchStaff) {
-      results = results.filter(
-        (item) =>
-          item.staffname &&
-          item.staffname
-            .toLowerCase()
-            .includes(searchStaff.toLowerCase())
-      );
-    }
-    if (searchResponse) {
-      results = results.filter(
-        (item) =>
-          item.response &&
-          item.response.toLowerCase().includes(searchResponse.toLowerCase())
-      );
-    }
-    if (searchDesc) {
-      results = results.filter(
-        (item) =>
-          item.desc &&
-          item.desc
-            .toLowerCase()
-            .includes(searchDesc.toLowerCase())
-      );
-    }
-    if (searchNxtfoll) {
-      results = results.filter(
-        (item) =>
-          (item.nxtfoll &&
-            item.nxtfoll
-              .toLowerCase()
-              .includes(searchNxtfoll.toLowerCase())) 
-      );
-    }
-    // results = results.map((item) => ({
-    //   ...item,
-    //   category: getUniqueCategories()[item.category],
-    // }));
-    setSearchResults(results);
+  // Function to calculate the start and end dates of the previous week
+  const getLastWeekDates = () => {
+    const today = new Date();
+    const firstDayOfWeek = new Date(
+      today.setDate(today.getDate() - today.getDay() - 6)
+    );
+    const lastDayOfWeek = new Date(
+      today.setDate(today.getDate() - today.getDay())
+    );
+    const startDate = firstDayOfWeek.toISOString().split("T")[0];
+    const endDate = lastDayOfWeek.toISOString().split("T")[0];
+    return { startDate, endDate };
   };
-  filterResults();
-}, [
-  searchCatagory,
-  searchName,
-  searchDateTime,
-  searchContact,
-  searchAddress,
-  searchReference,
-  searchCity,
-  searchInterest,
-  searchFolldate,
-  searchStaff,
-  searchResponse,
-  searchDesc,
-  searchNxtfoll
-]);
 
-function getColor(colorcode) {
-  if (colorcode === "easy") {
-    return "#ffb9798f";
-  } else if (colorcode === "medium") {
-    return "#0080002e";
-  } else if (colorcode === "hard") {
-    return "#ffb9798f";
-  } else {
-    return "transparent";
+  // Get the start and end dates of the previous week
+  const { startDate, endDate } = getLastWeekDates();
+
+  let i = 0;
+  const getenquiry = async () => {
+    let res = await axios.get(apiURL + "/getcalllateraggredata");
+    if ((res.status = 200)) {
+      setfilterdata(
+        res.data?.enquiryfollowup.filter(
+          (item) => item.nxtfoll >= startDate && item.nxtfoll <= endDate
+        )
+      );
+      setSearchResults(
+        res.data?.enquiryfollowup.filter(
+          (item) => item.nxtfoll >= startDate && item.nxtfoll <= endDate
+        )
+      );
+    }
+  };
+  const enquirydetail = (data) => {
+    navigate(`/enquirydetail/${data.EnquiryId}`);
+  };
+  useEffect(() => {
+    const filterResults = () => {
+      let results = filterdata;
+      if (searchCatagory) {
+        results = results.filter(
+          (item) =>
+            item.category &&
+            item.category.toLowerCase().includes(searchCatagory.toLowerCase())
+        );
+      }
+      if (searchDateTime) {
+        results = results.filter(
+          (item) =>
+            item.enquirydata[0]?.date &&
+            item.date.toLowerCase().includes(searchDateTime.toLowerCase())
+        );
+      }
+
+      if (searchName) {
+        results = results.filter(
+          (item) =>
+            item.enquirydata[0]?.name &&
+            item.enquirydata[0]?.name
+              .toLowerCase()
+              .includes(searchName.toLowerCase())
+        );
+      }
+      if (searchContact) {
+        results = results.filter(
+          (item) =>
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
+              .toLowerCase()
+              .includes(searchContact.toLowerCase())
+        );
+      }
+      if (searchAddress) {
+        results = results.filter(
+          (item) =>
+            item.enquirydata[0]?.address &&
+            item.enquirydata[0]?.address
+              .toLowerCase()
+              .includes(searchAddress.toLowerCase())
+        );
+      }
+      if (searchReference) {
+        results = results.filter(
+          (item) =>
+            item.enquirydata[0]?.reference1 &&
+            item.enquirydata[0]?.reference1
+              .toLowerCase()
+              .includes(searchReference.toLowerCase())
+        );
+      } //
+      if (searchReference2) {
+        results = results.filter(
+          (item) =>
+            item.enquirydata[0]?.reference2 &&
+            item.enquirydata[0]?.reference2
+              .toLowerCase()
+              .includes(searchReference2.toLowerCase())
+        );
+      } //
+      if (searchCity) {
+        results = results.filter(
+          (item) =>
+            item.enquirydata[0]?.city &&
+            item.enquirydata[0]?.city
+              .toLowerCase()
+              .includes(searchCity.toLowerCase())
+        );
+      }
+      if (searchInterest) {
+        results = results.filter(
+          (item) =>
+            item.enquirydata[0]?.intrestedfor &&
+            item.enquirydata[0]?.intrestedfor
+              .toLowerCase()
+              .includes(searchInterest.toLowerCase())
+        );
+      }
+      if (searchFolldate) {
+        results = results.filter(
+          (item) =>
+            item.folldate &&
+            item.folldate.toLowerCase().includes(searchFolldate.toLowerCase())
+        );
+      }
+      if (searchStaff) {
+        results = results.filter(
+          (item) =>
+            item.staffname &&
+            item.staffname.toLowerCase().includes(searchStaff.toLowerCase())
+        );
+      }
+      if (searchResponse) {
+        results = results.filter(
+          (item) =>
+            item.response &&
+            item.response.toLowerCase().includes(searchResponse.toLowerCase())
+        );
+      }
+      if (searchDesc) {
+        results = results.filter(
+          (item) =>
+            item.desc &&
+            item.desc.toLowerCase().includes(searchDesc.toLowerCase())
+        );
+      }
+      if (searchNxtfoll) {
+        results = results.filter(
+          (item) =>
+            item.nxtfoll &&
+            item.nxtfoll.toLowerCase().includes(searchNxtfoll.toLowerCase())
+        );
+      }
+      // results = results.map((item) => ({
+      //   ...item,
+      //   category: getUniqueCategories()[item.category],
+      // }));
+      setSearchResults(results);
+    };
+    filterResults();
+  }, [
+    searchCatagory,
+    searchName,
+    searchDateTime,
+    searchContact,
+    searchAddress,
+    searchReference,
+    searchCity,
+    searchInterest,
+    searchFolldate,
+    searchStaff,
+    searchResponse,
+    searchDesc,
+    searchNxtfoll,
+  ]);
+
+  function getColor(colorcode) {
+    if (colorcode === "easy") {
+      return "#ffb9798f";
+    } else if (colorcode === "medium") {
+      return "#0080002e";
+    } else if (colorcode === "hard") {
+      return "#ffb9798f";
+    } else {
+      return "transparent";
+    }
   }
-}
 
   // Pagination logic
   const totalPages = Math.ceil(searchResults.length / itemsPerPage);
@@ -239,12 +244,11 @@ function getColor(colorcode) {
 
       <div className="row m-auto">
         <div className="col-md-12">
-
-           {/* Pagination */}
-           <div className="pagination">
+          {/* Pagination */}
+          <div className="pagination">
             <span>Page </span>
             <select
-            className="m-1"
+              className="m-1"
               value={currentPage}
               onChange={(e) => handlePageChange(Number(e.target.value))}
             >
@@ -256,7 +260,7 @@ function getColor(colorcode) {
             </select>
             <span> of {totalPages}</span>
           </div>
-        <table>
+          <table>
             <thead>
               <tr className="tr ">
                 <th scope="col">
@@ -427,7 +431,7 @@ function getColor(colorcode) {
                     <td>{item.enquirydata[0]?.enquirydate}</td>
 
                     <td>{item.enquirydata[0]?.name}</td>
-                    <td>{item.enquirydata[0]?.contact1}</td>
+                    <td>{item.enquirydata[0]?.mobile}</td>
                     <td>{item.enquirydata[0]?.address}</td>
                     <td>{item.enquirydata[0]?.city}</td>
 
@@ -450,4 +454,3 @@ function getColor(colorcode) {
 }
 
 export default Ethisweek;
-

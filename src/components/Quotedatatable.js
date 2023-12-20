@@ -30,9 +30,9 @@ function Quotelist() {
   const [searchDesc, setSearchDesc] = useState("");
   const [searchNxtfoll, setSearchNxtfoll] = useState("");
 
-    // Pagination state
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10);
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
   // Get today's date
   const today = new Date();
   useEffect(() => {
@@ -42,12 +42,20 @@ function Quotelist() {
   const getenquiryadd = async () => {
     let res = await axios.get(apiURL + "/getenquirydata");
     if (res.status === 200) {
-      setenquiryflwdata(res.data?.quotefollowup.filter((i)=>i.category === category && i.nxtfoll === date));
-      setSearchResults(res.data?.quotefollowup.filter((i)=>i.category === category && i.nxtfoll === date)); // Update the searchResults state with the full data
+      setenquiryflwdata(
+        res.data?.quotefollowup.filter(
+          (i) => i.category === category && i.nxtfoll === date
+        )
+      );
+      setSearchResults(
+        res.data?.quotefollowup.filter(
+          (i) => i.category === category && i.nxtfoll === date
+        )
+      ); // Update the searchResults state with the full data
     }
   };
   let i = 0;
-console.log("quotedata-----",enquiryflwdata)
+  console.log("quotedata-----", enquiryflwdata);
   useEffect(() => {
     const filterResults = () => {
       let results = enquiryflwdata;
@@ -64,7 +72,9 @@ console.log("quotedata-----",enquiryflwdata)
         results = results.filter(
           (item) =>
             item.quotedata[0]?.date &&
-            item.quotedata[0]?.date.toLowerCase().includes(searchDateTime.toLowerCase())
+            item.quotedata[0]?.date
+              .toLowerCase()
+              .includes(searchDateTime.toLowerCase())
         );
       }
 
@@ -80,8 +90,8 @@ console.log("quotedata-----",enquiryflwdata)
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
               .toLowerCase()
               .includes(searchContact.toLowerCase())
         );
@@ -118,7 +128,9 @@ console.log("quotedata-----",enquiryflwdata)
         results = results.filter(
           (item) =>
             item.quotedata[0]?.netTotal &&
-            item.quotedata[0]?.netTotal.toLowerCase().includes(searchTotal.toLowerCase())
+            item.quotedata[0]?.netTotal
+              .toLowerCase()
+              .includes(searchTotal.toLowerCase())
         );
       }
       if (searchExecutive) {
@@ -148,7 +160,9 @@ console.log("quotedata-----",enquiryflwdata)
         results = results.filter(
           (item) =>
             item.enquirydata[0]?.desc &&
-            item.enquirydata[0]?.desc.toLowerCase().includes(searchDesc.toLowerCase())
+            item.enquirydata[0]?.desc
+              .toLowerCase()
+              .includes(searchDesc.toLowerCase())
         );
       }
       if (searchNxtfoll) {
@@ -225,7 +239,7 @@ console.log("quotedata-----",enquiryflwdata)
             <span> of {totalPages}</span>
           </div>
 
-          <table >
+          <table>
             <thead>
               <tr className="bg ">
                 <th scope="col" className="bor">
@@ -388,7 +402,7 @@ console.log("quotedata-----",enquiryflwdata)
               </tr>
             </thead>
             <tbody>
-            {currentItems.map((item) => (
+              {currentItems.map((item) => (
                 <a onClick={() => click(item)} className="tbl">
                   <tr className="trnew">
                     <td>{i++}</td>
@@ -400,7 +414,7 @@ console.log("quotedata-----",enquiryflwdata)
                       {item?.quotedata[0]?.time}
                     </td>
                     <td>{item?.enquirydata[0]?.name}</td>
-                    <td>{item?.enquirydata[0]?.contact1}</td>
+                    <td>{item?.enquirydata[0]?.mobile}</td>
                     <td>{item?.enquirydata[0]?.address}</td>
 
                     <td>{item?.enquirydata[0]?.city}</td>
@@ -408,10 +422,10 @@ console.log("quotedata-----",enquiryflwdata)
                     <td>{item?.quotedata[0]?.netTotal}</td>
                     <td>{item?.enquirydata[0]?.executive}</td>
                     <td>{item?.quotedata[0]?.Bookedby}</td>
-                    <td>{item?.enquirydata[0]?.enquirydate}</td>
+                    <td>{item?.enquirydata[0]?.date}</td>
                     <td>{item?.nxtfoll}</td>
                     <td>{item?.desc}</td>
-                    <td>  </td>
+                    <td> </td>
                   </tr>
                 </a>
                 // </Link>

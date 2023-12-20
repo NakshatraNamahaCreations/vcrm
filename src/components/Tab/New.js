@@ -27,9 +27,8 @@ function Enquirynew() {
   const [searchDesc, setSearchDesc] = useState("");
   const [searchNxtfoll, setSearchNxtfoll] = useState("");
 
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(25);
 
   useEffect(() => {
     getenquiry();
@@ -38,19 +37,20 @@ function Enquirynew() {
   const getenquiry = async () => {
     let res = await axios.get(apiURL + "/getallnewfollow");
     if ((res.status = 200)) {
-      const data = res.data?.enquiryadd;
+      setfilterdata(res.data?.enquiryadd);
 
-      const filteredData = data.filter(
-        (item) => item.enquiryFollow.length === 0
-      );
-      setfilterdata(filteredData);
-
-      setSearchResults(filteredData);
+      setSearchResults(res.data?.enquiryadd);
     }
   };
 
-  const enquirydetail = (data) => {
-    navigate(`/enquirydetail/${data?.EnquiryId}`);
+  const enquirydetail = (row) => {
+    const queryString = new URLSearchParams({
+      enquiryData: JSON.stringify(row),
+    }).toString();
+    const newTab = window.open(
+      `/enquirydetail/${row.EnquiryId}?${queryString}`,
+      "_blank"
+    );
   };
 
   useEffect(() => {
@@ -66,10 +66,8 @@ function Enquirynew() {
       if (searchDateTime) {
         results = results.filter(
           (item) =>
-            item.enquirydate &&
-            item.enquirydate
-              .toLowerCase()
-              .includes(searchDateTime.toLowerCase())
+            item.date &&
+            item.date.toLowerCase().includes(searchDateTime.toLowerCase())
         );
       }
 
@@ -83,8 +81,8 @@ function Enquirynew() {
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.contact1 &&
-            item.contact1.toLowerCase().includes(searchContact.toLowerCase())
+            item.mobile &&
+            item.mobile.toLowerCase().includes(searchContact.toLowerCase())
         );
       }
       if (searchAddress) {
@@ -213,6 +211,9 @@ function Enquirynew() {
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage);
   };
+
+  // Calculate the starting serial number based on the current page
+  const startSerialNumber = (currentPage - 1) * itemsPerPage + 1;
   return (
     <div>
       <Header />
@@ -246,6 +247,7 @@ function Enquirynew() {
                 <th scope="col">
                   {" "}
                   <select
+                    className="vhs-table-input"
                     value={searchCatagory}
                     onChange={(e) => setSearchCatagory(e.target.value)}
                   >
@@ -265,7 +267,7 @@ function Enquirynew() {
                   {" "}
                   <input
                     className="vhs-table-input"
-                    placeholder="Enq Date "
+                    placeholder="mm-dd-yyyy "
                     value={searchDateTime}
                     onChange={(e) => setSearchDateTime(e.target.value)}
                   />{" "}
@@ -301,6 +303,7 @@ function Enquirynew() {
                 <th scope="col">
                   {" "}
                   <select
+                    className="vhs-table-input"
                     value={searchCity}
                     onChange={(e) => setSearchCity(e.target.value)}
                   >
@@ -333,53 +336,13 @@ function Enquirynew() {
                     onChange={(e) => setSearchInterest(e.target.value)}
                   />
                 </th>
-                {/* <th scope="col">
-                  {" "}
-                  <input
-                    placeholder="foll date"
-                    className="vhs-table-input"
-                    value={searchFolldate}
-                    onChange={(e) => setSearchFolldate(e.target.value)}
-                  />{" "}
-                </th> */}
-
-                {/* <th scope="col">
-                  <input
-                    placeholder="Staff"
-                    className="vhs-table-input"
-                    value={searchStaff}
-                    onChange={(e) => setSearchStaff(e.target.value)}
-                  />{" "}
-                </th>
-                <th scope="col">
-                  <input
-                    placeholder="Response"
-                    className="vhs-table-input"
-                    value={searchResponse}
-                    onChange={(e) => setSearchResponse(e.target.value)}
-                  />{" "}
-                </th>
-                <th scope="col">
-                  <input
-                    placeholder="Desc"
-                    className="vhs-table-input"
-                    value={searchDesc}
-                    onChange={(e) => setSearchDesc(e.target.value)}
-                  />{" "}
-                </th>
-                <th scope="col">
-                  <input
-                    placeholder="Nxt foll"
-                    className="vhs-table-input"
-                    value={searchNxtfoll}
-                    onChange={(e) => setSearchNxtfoll(e.target.value)}
-                  />{" "}
-                </th> */}
               </tr>
               <tr className="bg">
                 <th className="bor">#</th>
                 <th className="bor">Category</th>
-                <th className="bor">Date</th>
+                <th className="bor" style={{ width: "100px" }}>
+                  Date
+                </th>
 
                 <th className="bor">Name</th>
                 <th className="bor">Contact</th>
@@ -388,11 +351,6 @@ function Enquirynew() {
                 <th className="bor">Reference2</th>
 
                 <th className="bor">Interested for</th>
-                {/* <th className="bor">Foll Date</th>
-                <th className="bor">Staff</th>
-                <th className="bor">Response</th>
-                <th className="bor">Desc</th>
-                <th className="bor">Nxt Foll</th> */}
               </tr>
             </thead>
             <tbody>
@@ -406,12 +364,12 @@ function Enquirynew() {
                       color: "black",
                     }}
                   >
-                    <td>{index + 1}</td>
+                    <td>{startSerialNumber + index}</td>
                     <td>{item.category}</td>
-                    <td>{item.enquirydate}</td>
+                    <td>{item.date}</td>
 
                     <td>{item.name}</td>
-                    <td>{item.contact1}</td>
+                    <td>{item.mobile}</td>
                     <td>{item.address}</td>
                     <td>{item.city}</td>
 

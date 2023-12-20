@@ -27,11 +27,10 @@ function Enquirydatatable() {
   const [searchDesc, setSearchDesc] = useState("");
   const [searchNxtfoll, setSearchNxtfoll] = useState("");
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
-    // Pagination state
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10);
-  
   const today = new Date();
   useEffect(() => {
     getenquiry();
@@ -49,9 +48,8 @@ function Enquirydatatable() {
     }
   };
 
-  console.log("nn",filterdata);
+  console.log("nn", filterdata);
   const enquirydetail = (data) => {
- 
     navigate(`/enquirydetail/${data.EnquiryId}`);
   };
   let i = 0;
@@ -69,10 +67,8 @@ function Enquirydatatable() {
       if (searchDateTime) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.enquirydate &&
-            item.enquirydate
-              .toLowerCase()
-              .includes(searchDateTime.toLowerCase())
+            item.enquirydata[0]?.date &&
+            item.date.toLowerCase().includes(searchDateTime.toLowerCase())
         );
       }
 
@@ -88,8 +84,8 @@ function Enquirydatatable() {
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
               .toLowerCase()
               .includes(searchContact.toLowerCase())
         );
@@ -209,22 +205,22 @@ function Enquirydatatable() {
     }
   }
 
-   // Pagination logic
-   const totalPages = Math.ceil(searchResults.length / itemsPerPage);
-   const pageOptions = Array.from(
-     { length: totalPages },
-     (_, index) => index + 1
-   );
- 
-   // Get current items for the current page
-   const indexOfLastItem = currentPage * itemsPerPage;
-   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-   const currentItems = searchResults.slice(indexOfFirstItem, indexOfLastItem);
- 
-   // Change page
-   const handlePageChange = (selectedPage) => {
-     setCurrentPage(selectedPage);
-   };
+  // Pagination logic
+  const totalPages = Math.ceil(searchResults.length / itemsPerPage);
+  const pageOptions = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
+
+  // Get current items for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = searchResults.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage);
+  };
   return (
     <div>
       <Header />
@@ -232,12 +228,11 @@ function Enquirydatatable() {
 
       <div className="row m-auto">
         <div className="col-md-12">
-
-           {/* Pagination */}
-           <div className="pagination">
+          {/* Pagination */}
+          <div className="pagination">
             <span>Page </span>
             <select
-            className="m-1"
+              className="m-1"
               value={currentPage}
               onChange={(e) => handlePageChange(Number(e.target.value))}
             >
@@ -249,7 +244,7 @@ function Enquirydatatable() {
             </select>
             <span> of {totalPages}</span>
           </div>
-          <table >
+          <table>
             <thead>
               <tr className="tr ">
                 <th scope="col">
@@ -405,7 +400,7 @@ function Enquirydatatable() {
               </tr>
             </thead>
             <tbody>
-            {currentItems.map((item, index) => (
+              {currentItems.map((item, index) => (
                 <a onClick={() => enquirydetail(item)} className="tbl">
                   <tr
                     key={item.id}
@@ -420,7 +415,7 @@ function Enquirydatatable() {
                     <td>{item.enquirydata[0]?.enquirydate}</td>
 
                     <td>{item.enquirydata[0]?.name}</td>
-                    <td>{item.enquirydata[0]?.contact1}</td>
+                    <td>{item.enquirydata[0]?.mobile}</td>
                     <td>{item.enquirydata[0]?.address}</td>
                     <td>{item.enquirydata[0]?.city}</td>
 

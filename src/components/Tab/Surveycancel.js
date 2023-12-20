@@ -67,11 +67,8 @@ function Surveydatatable() {
       const fd = res.data?.enquiryfollowup.filter(
         (i) => i.response === "Survey"
       );
-      const filteredData = fd.filter(
-        (entry) =>  entry.cancelStatus === "true"
-      );
+      const filteredData = fd.filter((entry) => entry.cancelStatus === "true");
 
-    
       setFilteredData(filteredData);
       setSearchResults(filteredData);
     }
@@ -127,8 +124,8 @@ function Surveydatatable() {
       if (searchDateTime) {
         results = results.filter(
           (item) =>
-            (item.enquirydata[0]?.enquirydate &&
-              item.enquirydata[0]?.enquirydate
+            (item.enquirydata[0]?.date &&
+              item.enquirydata[0]?.date
                 .toLowerCase()
                 .includes(searchDateTime.toLowerCase())) ||
             (item.appoTime &&
@@ -149,8 +146,8 @@ function Surveydatatable() {
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
               .toLowerCase()
               .includes(searchContact.toLowerCase())
         );
@@ -510,13 +507,13 @@ function Surveydatatable() {
                     <td>{i++}</td>
                     <td>{item.category}</td>
                     <td>
-                      {item.enquirydata[0]?.enquirydate}
+                      {item.enquirydata[0]?.date}
                       <br />
-                      {item.enquirydata[0]?.time}
+                      {item.enquirydata[0]?.Time}
                     </td>
 
                     <td>{item.enquirydata[0]?.name}</td>
-                    <td>{item.enquirydata[0]?.contact1}</td>
+                    <td>{item.enquirydata[0]?.mobile}</td>
                     <td>{item.enquirydata[0]?.address}</td>
                     <td>{item.enquirydata[0]?.reference1}</td>
                     <td>{item.enquirydata[0]?.city}</td>

@@ -105,8 +105,8 @@ function Quotelist() {
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
               .toLowerCase()
               .includes(searchContact.toLowerCase())
         );
@@ -557,17 +557,17 @@ function Quotelist() {
                     <td>
                       {item?.date}
                       <br />
-                      {item?.time}
+                      {item?.Time}
                     </td>
                     <td>{item?.enquirydata[0]?.name}</td>
-                    <td>{item?.enquirydata[0]?.contact1}</td>
+                    <td>{item?.enquirydata[0]?.mobile}</td>
                     <td>{item?.enquirydata[0]?.address}</td>
                     <td>{item?.enquirydata[0]?.city}</td>
                     <td>{item?.enquirydata[0]?.intrestedfor} </td>
                     <td>{item?.netTotal}</td>
                     <td>{item?.enquirydata[0]?.executive}</td>
                     <td>{item?.Bookedby}</td>
-                    <td>{item?.enquirydata[0]?.enquirydate}</td>
+                    <td>{item?.enquirydata[0]?.date}</td>
                     <td>{item?.quotefollowup[0]?.nxtfoll}</td>
                     <td>{item?.quotefollowup[0]?.desc}</td>
                     {item?.quotefollowup[0]?.response === "Confirmed" ? (

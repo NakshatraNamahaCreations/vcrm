@@ -46,7 +46,7 @@ function Createquote() {
 
   const gettechnician = async () => {
     let res = await axios.get(apiURL + "/getalltechnician");
-    if ((res.status = 200)) {
+    if (res.status === 200) {
       const TDdata = res.data?.technician;
       const filteredTechnicians = TDdata.filter((technician) => {
         return technician.category.some(
@@ -157,7 +157,7 @@ function Createquote() {
       };
       await axios(config).then(function (response) {
         if (response.status === 200) {
-          makeApiCall(getTemplateDatails, data.enquirydata[0].contact1);
+          makeApiCall(getTemplateDatails, data.enquirydata[0].mobile);
           alert("Successfully Added");
           window.location.reload();
           // navigate(`/quotedetails/${data.EnquiryId}`);
@@ -312,9 +312,9 @@ function Createquote() {
                   <div className="col-md-4">
                     <div className="">
                       <b>Contact1 : </b>
-                      {data.enquirydata[0]?.contact1}{" "}
+                      {data.enquirydata[0]?.mobile}{" "}
                       <a
-                        href={`https://wa.me/+91${data.enquirydata[0]?.contact1}`}
+                        href={`https://wa.me/+91${data.enquirydata[0]?.mobile}`}
                         target="_blank"
                       >
                         <i
