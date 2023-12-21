@@ -546,7 +546,6 @@ function Dsrdetails() {
 
     const invoiceUrl = `https://vijayhomeservicebengaluru.in/dsr_invoice_bill?id=${id}`;
 
-    console.log("invoiceUrl", invoiceUrl);
     const invoiceLink = serivePrice.replace(
       /\{Invoice_link\}/g,
       `[Click to view invoice](${invoiceUrl})`
@@ -1245,6 +1244,7 @@ function Dsrdetails() {
                         {item.vhsname}
                       </option>
                     ))}
+                  <option value="Blank">Blank</option>
                   {type === "PM" &&
                     PMdata.map((item) => (
                       <option key={item.id} value={item._id}>
@@ -1263,7 +1263,7 @@ function Dsrdetails() {
           </div>
         </div>
 
-        <div className="row pt-3">
+        {/* <div className="row pt-3">
           <div className="row">
             <div className="col-6 d-flex">
               <div className="col-4">Send SMS</div>
@@ -1284,7 +1284,7 @@ function Dsrdetails() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="row pt-3">
           <div className="row">

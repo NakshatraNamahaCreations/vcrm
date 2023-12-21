@@ -6,7 +6,10 @@ import DSRnav from "./DSRnav";
 
 function Dsrcallist() {
   const apiURL = process.env.REACT_APP_API_URL;
+  const admin = JSON.parse(sessionStorage.getItem("admin"));
+
   const { date, category } = useParams();
+
   const [treatmentData, settreatmentData] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [dsrdata1, setdsrdata1] = useState([]);
@@ -20,33 +23,39 @@ function Dsrcallist() {
   const [searchDesc, setSearchDesc] = useState("");
   const [searchpaymentMode, setsearchpaymentMode] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(25);
+  const [Totalcount, setTotalcount] = useState();
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = searchResults.slice(indexOfFirstItem, indexOfLastItem);
-  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 25; // Set your desired page size here
 
-  const tp = Math.ceil(totalPages / itemsPerPage);
+  const totalPages = Math.ceil(Totalcount / pageSize);
 
   useEffect(() => {
     getservicedata();
-  }, [category]); // Update data when category, date, or currentPage changes
+  }, [
+    category,
+    currentPage,
+    searchCustomerName,
+    searchTechName,
+    searchContact,
+  ]);
 
   const getservicedata = async () => {
     try {
-      // Fetch data from the server, including search criteria
       let res = await axios.get(apiURL + "/getservicedatawithaddcalnew", {
         params: {
           category: category,
           date: date,
           page: currentPage,
+          city: admin.city,
+          customerName: searchCustomerName,
+          number: searchContact,
+          techname: searchTechName,
         },
       });
 
       if (res.status === 200) {
         const allData = res.data?.runningdata;
-
+        setTotalcount(res.data?.totalCount);
         setSearchResults(allData);
         settreatmentData(allData);
       }
@@ -351,7 +360,7 @@ function Dsrcallist() {
       </div>
 
       <div className="row m-auto">
-        {/* <div className="pagination-container">
+        <div className="pagination-container">
           <span>Page:</span>
           <select
             value={currentPage}
@@ -359,13 +368,15 @@ function Dsrcallist() {
               setCurrentPage(Number(e.target.value));
             }}
           >
-            {Array.from({ length: tp }, (_, index) => index + 1).map((page) => (
-              <option key={page} value={page}>
-                {page}
-              </option>
-            ))}
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+              (page) => (
+                <option key={page} value={page}>
+                  {page}
+                </option>
+              )
+            )}
           </select>
-        </div> */}
+        </div>
         <div className="col-md-12">
           <table
             class="table table-hover table-bordered mt-1"

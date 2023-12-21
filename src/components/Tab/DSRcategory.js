@@ -19,7 +19,6 @@ function DSRcategory() {
   const [dsrnewdata, setdsrnewdata] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [filteredData, setFilteredData] = useState([]);
-  const [totalservice, settotalservice] = useState(0);
 
   useEffect(() => {
     const currentMonth = moment().month() + 1; // Get the current month (1-12)
@@ -94,8 +93,9 @@ function DSRcategory() {
     try {
       const res = await axios.post(apiURL + "/postservicecatdevideddatesnew", {
         category: dCategory,
-        startDate: rstart, // Send start date to the backend
-        endDate: rend, // Send end date to the backend
+        startDate: rstart,
+        endDate: rend,
+        city: admin.city,
       });
 
       if (res.status === 200) {
@@ -136,17 +136,12 @@ function DSRcategory() {
 
   const handleSelectEvent = (event) => {
     const selectedDate = moment(event.start).format("YYYY-MM-DD");
-    const selectedData = dsrnewdata.filter((item) => item.dividedDates);
 
     const url = `/dsrcallist/${selectedDate}/${dCategory}`;
-    const newState = { data: selectedData };
 
     // Open link in a new tab
     const newTab = window.open(url, "_blank");
     newTab.location && newTab.location.reload(); // Optional: Reload the new tab with the provided URL
-
-    // You can also pass state to the new tab using sessionStorage or localStorage and access it in the new tab if needed
-    sessionStorage.setItem("newTabState", JSON.stringify(newState));
   };
 
   return (

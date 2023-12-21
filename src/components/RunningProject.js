@@ -261,15 +261,7 @@ function RunningProject() {
               .includes(worker.toLowerCase())
         );
       }
-      // if (vendorPayment) {
-      //   results = results.filter(
-      //     (item) =>
-      //       item.customerFeedback &&
-      //       item.customerFeedback
-      //         .toLowerCase()
-      //         .includes(vendorPayment.toLowerCase())
-      //   );
-      // }
+
       if (charges) {
         results = results.filter(
           (item) =>
@@ -286,24 +278,7 @@ function RunningProject() {
             item.serviceCharge.toLowerCase().includes(quoteValue.toLowerCase())
         );
       }
-      // if (payment) {
-      //   results = results.filter(
-      //     (item) =>
-      //       item.customerFeedback &&
-      //       item.customerFeedback
-      //         .toLowerCase()
-      //         .includes(payment.toLowerCase())
-      //   );
-      // }
-      // if (type) {
-      //   results = results.filter(
-      //     (item) =>
-      //       item."RUNNING PROJECTS" &&
-      //       item.RUNNING PROJECTS
-      //         .toLowerCase()
-      //         .includes(RUNNING PROJECTS.toLowerCase())
-      //   );
-      // }
+
       setSearchResults(results);
     };
     filterResults();

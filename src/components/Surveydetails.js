@@ -378,7 +378,7 @@ function Createquote() {
                       <input
                         value={data.enquirydata[0]?.enquirydate}
                         className="col-md-12 vhs-input-value"
-                        placeholder={data.enquirydate}
+                        placeholder={data.date}
                       />
                     </div>
                   </div>
@@ -389,7 +389,7 @@ function Createquote() {
                         type="text"
                         // defaultValue={data.enquirydata[0]?.time}
                         className="col-md-12 vhs-input-value"
-                        value={data.enquirydata[0]?.time}
+                        value={data.enquirydata[0]?.Time}
                       />
                     </div>
                   </div>

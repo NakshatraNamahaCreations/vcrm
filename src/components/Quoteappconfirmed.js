@@ -80,8 +80,8 @@ const [Type, setType] = useState("")
       if (searchContact) {
         results = results.filter(
           (item) =>
-            item.enquirydata[0]?.contact1 &&
-            item.enquirydata[0]?.contact1
+            item.enquirydata[0]?.mobile &&
+            item.enquirydata[0]?.mobile
               .toLowerCase()
               .includes(searchContact.toLowerCase())
         );
@@ -461,7 +461,7 @@ const [Type, setType] = useState("")
                     {item?.time}
                   </td>
                   <td>{item?.enquirydata[0]?.name}</td>
-                  <td>{item?.enquirydata[0]?.contact1}</td>
+                  <td>{item?.enquirydata[0]?.mobile}</td>
                   <td>{item?.enquirydata[0]?.address}</td>
 
                   <td>{item?.enquirydata[0]?.city}</td>
@@ -469,7 +469,7 @@ const [Type, setType] = useState("")
                   <td>{item?.netTotal}</td>
                   <td>{item?.enquirydata[0]?.executive}</td>
                   <td>{item?.Bookedby}</td>
-                  <td>{item?.enquirydata[0]?.enquirydate}</td>
+                  <td>{item?.enquirydata[0]?.date}</td>
                   <td>{item?.nxtfoll}</td>
                   <td>{item?.desc}</td>
                   {item?.response === "Confirmed" ?

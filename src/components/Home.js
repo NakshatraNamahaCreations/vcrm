@@ -104,12 +104,12 @@ function Home() {
   }, []);
 
   const enquiryCurrentDateLength = enquiry.filter((item) =>
-    moment(item.enquirydate, "MM-DD-YYYY").isSame(moment(), "day")
+    moment(item.date, "MM-DD-YYYY").isSame(moment(), "day")
   );
   // console.log("enquiryCurrentDateLength", enquiryCurrentDateLength.length);
 
   const enquiryFollowUpCurrentDateLength = enquiryFollowup.filter((item) =>
-    moment(item.enquirydate, "MM-DD-YYYY").isSame(moment(), "day")
+    moment(item.date, "MM-DD-YYYY").isSame(moment(), "day")
   );
   const enquiryFollowUpCallLater = enquiryFollowup.filter(
     (item) => item.response === "Call Later"

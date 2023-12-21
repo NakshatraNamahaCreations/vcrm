@@ -5,7 +5,6 @@ import {
   Route,
   Routes,
   BrowserRouter,
-  
 } from "react-router-dom";
 import Welcomepage from "./components/Welcomepage";
 import Login from "./components/Login";
@@ -345,7 +344,7 @@ function App() {
           <Route path="/customeredit" element={<Customeredit />} />
 
           <Route path="/work/:id" element={<Work />} />
-      
+
           <Route path="/payment/:id" element={<Payment />} />
 
           <Route path="/customerservnav" element={<Customersernav />} />

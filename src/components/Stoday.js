@@ -82,10 +82,10 @@ function Stoday() {
                         >
                           <td>{i++}</td>
                           <td>{item.category}</td>
-                          <td>{item.enquirydate}</td>
-                          <td>{item.time}</td>
+                          <td>{item.date}</td>
+                          <td>{item.Time}</td>
                           <td>{item.name}</td>
-                          <td>{item.contact1}</td>
+                          <td>{item.mobile}</td>
                           <td>{item.address}</td>
                           <td>{item.reference1}</td>
                           <td>{item.reference2}</td>

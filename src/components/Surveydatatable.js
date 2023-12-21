@@ -61,19 +61,30 @@ function Surveydatatable() {
     getenquiry();
   }, []);
 
+  console.log("categor", category, date);
   const getenquiry = async () => {
-    let res = await axios.get(apiURL + "/getsurveyaggredata");
-    if (res.status === 200) {
-      const fd = res.data?.enquiryfollowup.filter(
-        (i) => i.response === "Survey"
-      );
+    try {
+      const res = await axios.post(apiURL + "/getsurveyaggredata", {
+        category: category,
+        date: date,
+      });
 
-      const filteredData = fd.filter(
-        (entry) => entry.category === category && entry.nxtfoll === date
-      );
+      if (res.status === 200) {
+        const fd = res.data?.enquiryfollowup;
 
-      setFilteredData(filteredData);
-      setSearchResults(filteredData);
+        // const filteredData = fd.filter(
+        //   (entry) => entry.category === category && entry.nxtfoll === date
+        // );
+
+        setFilteredData(fd);
+        setSearchResults(fd);
+      } else {
+        console.error("Unexpected status code:", res.status);
+        // Handle other status codes as needed
+      }
+    } catch (error) {
+      console.error("An error occurred:", error.message);
+      // Handle the error, e.g., show an error message to the user
     }
   };
 
@@ -323,14 +334,13 @@ function Surveydatatable() {
           <table className="m-2">
             <thead>
               <tr className="bg ">
-                <th className="bor">
-                  <input className="vhs-table-input" />{" "}
-                </th>
+                <th className="bor"></th>
                 <th className="bor">
                   {" "}
                   <select
                     value={searchCatagory}
                     onChange={(e) => setSearchCatagory(e.target.value)}
+                    className="vhs-table-input"
                   >
                     <option value="">Select</option>
                     {[...catagories].map((catagories) => (
@@ -344,7 +354,6 @@ function Surveydatatable() {
                   {" "}
                   <input
                     className="vhs-table-input"
-                    placeholder="Enq Date Time"
                     value={searchDateTime}
                     onChange={(e) => setSearchDateTime(e.target.value)}
                   />{" "}
@@ -352,7 +361,6 @@ function Surveydatatable() {
                 <th className="bor">
                   {" "}
                   <input
-                    placeholder="Name"
                     className="vhs-table-input"
                     value={searchName}
                     onChange={(e) => setSearchName(e.target.value)}
@@ -361,7 +369,6 @@ function Surveydatatable() {
                 <th className="bor">
                   {" "}
                   <input
-                    placeholder="Contact"
                     className="vhs-table-input"
                     value={searchContact}
                     onChange={(e) => setSearchContact(e.target.value)}
@@ -370,7 +377,6 @@ function Surveydatatable() {
                 <th className="bor">
                   {" "}
                   <input
-                    placeholder="Address"
                     className="vhs-table-input"
                     value={searchAddress}
                     onChange={(e) => setSearchAddress(e.target.value)}
@@ -380,6 +386,7 @@ function Surveydatatable() {
                   <select
                     value={searchReference}
                     onChange={(e) => setSearchReference(e.target.value)}
+                    className="vhs-table-input"
                   >
                     <option value="">Select</option>
                     {[...reference].map((refere) => (
@@ -394,6 +401,7 @@ function Surveydatatable() {
                   <select
                     value={searchCity}
                     onChange={(e) => setSearchCity(e.target.value)}
+                    className="vhs-table-input"
                   >
                     <option value="">Select </option>
                     {[...cities].map((city) => (
@@ -403,10 +411,10 @@ function Surveydatatable() {
                     ))}
                   </select>{" "}
                 </th>
+                <th className="bor"></th>
                 <th className="bor">
                   {" "}
                   <input
-                    placeholder="Interested For"
                     className="vhs-table-input"
                     value={searchInterest}
                     onChange={(e) => setSearchInterest(e.target.value)}
@@ -415,7 +423,6 @@ function Surveydatatable() {
                 <th className="bor">
                   {" "}
                   <input
-                    placeholder="Executive"
                     className="vhs-table-input"
                     value={searchExecutive}
                     onChange={(e) => setSearchExecutive(e.target.value)}
@@ -424,22 +431,22 @@ function Surveydatatable() {
                 <th className="bor">
                   {" "}
                   <input
-                    placeholder="Appo. Date Time"
                     className="vhs-table-input"
                     value={searchAppoDateTime}
                     onChange={(e) => setSearchAppoDateTime(e.target.value)}
                   />{" "}
                 </th>
-
+                <th className="bor"></th>
                 <th className="bor">
                   {" "}
                   <select
-                  // value={filters.Type} onChange={handleInputChange}
+                    // value={filters.Type} onChange={handleInputChange}
+                    className="vhs-table-input"
                   >
                     <option>Select</option>
                   </select>{" "}
                 </th>
-                <th className="bor"></th>
+
                 <th className="bor"></th>
                 <th className="bor"></th>
               </tr>
@@ -454,6 +461,7 @@ function Surveydatatable() {
                 <th className="bor">Address</th>
                 <th className="bor">Reference</th>
                 <th className="bor">City</th>
+                <th className="bor">Backofficer</th>
                 <th className="bor">Interested For</th>
                 <th className="bor">Executive</th>
 
@@ -502,7 +510,9 @@ function Surveydatatable() {
                     <td>{item.enquirydata[0]?.mobile}</td>
                     <td>{item.enquirydata[0]?.address}</td>
                     <td>{item.enquirydata[0]?.reference1}</td>
+
                     <td>{item.enquirydata[0]?.city}</td>
+                    <td>{item.enquirydata[0]?.executive}</td>
                     <td>{item.enquirydata[0]?.intrestedfor}</td>
                     <td>{item.technicianname}</td>
                     <td>
